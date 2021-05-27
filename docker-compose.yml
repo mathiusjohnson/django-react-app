@@ -2,11 +2,11 @@ version: "3.7"
 services:
   db:
     image: "postgres:11.2"
-    container_name: "people_postgres1"
+    container_name: "people_two_postgres1"
     ports:
       - "54321:5432"
     volumes:
       - postgres_data1:/var/lib/postgresql/data
 volumes:
   postgres_data1:
-    name: people_postgres_data1
+    name: people_two_postgres_data1

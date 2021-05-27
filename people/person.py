@@ -1,31 +1,28 @@
-from graphene.relay import Node
-from graphene.types.generic import GenericScalar # Solution
-from graphene_django import DjangoObjectType
-from graphql_example.utils import CountableConnectionBase
+from attr import attrs, attrib
+import cattr
+from attr.validators import (
+    instance_of,
+    optional,
+)
+from typing import Optional
 
-# from .filters import PersonFilter
-from .models import Person
-
-
-class Person(DjangoObjectType):
-    meta = GenericScalar() # Solution
-    
-    class Meta:
-        model = Person
-        interfaces = (Node,)
-        filterset_class = PersonFilter
-
-    # @age.validator
-    # def _check_age(self, attribute, value):
-    #     if value <=20:
-    #         raise ValueError("age must be greater than 20")
+@attrs
+class PersonDataClass():
+    name: Optional[str] = attrib(default=None, validator=optional(instance_of(str)))
+    age: Optional[str] = attrib(default=None, validator=optional(instance_of(int)))
+    address_one: Optional[str] = attrib(default=None, validator=optional(instance_of(str)))
+    address_two: Optional[str] = attrib(default=None, validator=optional(instance_of(str)))
+    @age.validator
+    def _check_age(self, _, value):
+        if value <=20:
+            raise ValueError("age must be greater than 20")
 
     def structurePerson(json_data: any, person):
         person_object = cattr.structure(json_data, person)
         print(person_object)
         return person_object
 
-    def unstructurePerson(person):
+    def UnstructurePerson(person):
         json_data = cattr.unstructure(person)
         print(json_data)
         return json_data
