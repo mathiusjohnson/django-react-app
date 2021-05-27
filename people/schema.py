@@ -7,11 +7,11 @@ from .person import PersonDataClass
 
 class PersonSchema(ObjectType):
 
-    id = NonNull(Int),
-    name = NonNull(String),
-    age = NonNull(Int),
-    address_one = NonNull(String),
-    address_two = NonNull(String)
+    id = Int,
+    name = String,
+    age = Int,
+    address_one = String,
+    address_two = String
 
 class PersonSchemaOutput(PersonSchema, ObjectType):
 # notice we only need ID in output and not in input of Mutation of Create
@@ -41,7 +41,7 @@ class CreatePerson(graphene.Mutation):
         age = graphene.Int()
         address_one = graphene.String()
         address_two = graphene.String()
-        person_data = PersonSchemaInputCreate()
+        person_data = Argument(PersonSchemaInputCreate())
         # output will be the created person
         person = Argument(PersonSchemaOutput)
         ok = graphene.Boolean()
