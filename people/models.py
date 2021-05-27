@@ -1,10 +1,7 @@
 from django.db import models
 
-# Create your models here.
 
-class PersonProperties(models.Model):
-    name = models.CharField(max_length=200)
-    data = models.JSONField(null=True)
-    
-    def __str__(self):
-        return self.name
+class Person(models.Model):
+    first_name = models.CharField(max_length=30, help_text='First name of the person.')
+    last_name = models.CharField(max_length=30, help_text='Last name of the person.')
+    metadata = models.JSONField(default=dict, blank=True, help_text='Metadata of the person.')
