@@ -5,21 +5,26 @@ from graphene import Mutation, InputObjectType,ObjectType, String, Boolean, Fiel
 from .models import PersonModel
 from .person import PersonDataClass
 
-class PersonSchema(ObjectType):
 
-    id = Int,
-    name = String,
-    age = Int,
-    address_one = String,
+
+class PersonSchema(ObjectType):
+    id = graphene.NonNull(Int),
+    name = graphene.NonNull(String),
+    age = graphene.NonNull(Int),
+    address_one = graphene.NonNull(String),
     address_two = String
 
-class PersonSchemaOutput(PersonSchema, ObjectType):
+class PersonType(ObjectType):
+    class Meta:
+        model = PersonSchema
+
+class PersonSchemaOutput(PersonType, ObjectType):
 # notice we only need ID in output and not in input of Mutation of Create
     id = graphene.ID
     pass
 
 
-class PersonSchemaInputCreate(PersonSchema, InputObjectType):
+class PersonSchemaInputCreate(PersonType, InputObjectType):
     id = graphene.ID
     pass 
 
@@ -87,13 +92,13 @@ class CreatePerson(graphene.Mutation):
 
 
 class Query(object):
-    all_Persons = graphene.List(PersonSchema)
-    person = Field(PersonSchema)
+    all_Persons = graphene.List(PersonType)
+    person = Field(PersonType)
     ok = Boolean()
 
     @classmethod
     def mutate(cls, root, info, text, id):
-        person = PersonSchema.objects.get(pk=id)
+        person = PersonType.objects.get(pk=id)
         person.text = text
         person.save()
         # Notice we return an instance of this mutation
@@ -104,14 +109,14 @@ class Query(object):
         result = []
         for person_db in person_set:
             person_data_class = cattr.structure(person_db, PersonModel)
-            result.append(PersonSchema)   
+            result.append(PersonType)   
 
 # class CreatePerson(graphene.Mutation):
 #     class Arguments:
 #         # input
-#         person_data = PersonSchemaInputCreate(Required=True)
+#         person_data = PersonTypeInputCreate(Required=True)
 #         # output will be the created person
-#         person = Argument(PersonSchemaOutput)
+#         person = Argument(PersonTypeOutput)
 #         ok = graphene.Boolean()
 
 #     @classmethod
