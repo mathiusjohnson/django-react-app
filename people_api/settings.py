@@ -49,7 +49,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'people_api.urls'
@@ -70,7 +69,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'people_api.wsgi.application'
 
 
 # Database
@@ -79,9 +77,9 @@ WSGI_APPLICATION = 'people_api.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "people_two",
+        "NAME": "people",
         "USER": "peopleuser",
-        "PASSWORD": "people",
+        "PASSWORD": "mypassword",
         "HOST": "localhost",
         "PORT": "54321",
     }
@@ -133,5 +131,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 GRAPHENE = {
-    "SCHEMA": "people_api.schema.schema"
+    "SCHEMA": "people.schema.schema"
 }

@@ -7,14 +7,14 @@ from attr.validators import (
 from typing import Optional
 
 @attrs
-class PersonDataClass():
+class PersonDataClass:
     name: Optional[str] = attrib(default=None, validator=optional(instance_of(str)))
-    age: Optional[str] = attrib(default=None, validator=optional(instance_of(int)))
+    age: Optional[int] = attrib(default=None, validator=optional(instance_of(int)))
     address_one: Optional[str] = attrib(default=None, validator=optional(instance_of(str)))
     address_two: Optional[str] = attrib(default=None, validator=optional(instance_of(str)))
     @age.validator
     def _check_age(self, _, value):
-        if value <=20:
+        if value and value <=20:
             raise ValueError("age must be greater than 20")
 
     def structurePerson(json_data: any, person):
