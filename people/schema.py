@@ -1,31 +1,40 @@
 # from typing_extensions import Required
 import graphene
 import cattr
+from graphene_django.types import DjangoObjectType
 from graphene import Mutation, InputObjectType,ObjectType, String, Boolean, Field, Int, List, NonNull, ID, Argument
 from .models import PersonModel
 from .person import PersonDataClass
 
 
 
-class PersonSchema(ObjectType):
+class PersonSchema(DjangoObjectType):
     id = graphene.NonNull(Int),
     name = graphene.NonNull(String),
     age = graphene.NonNull(Int),
     address_one = graphene.NonNull(String),
     address_two = String
 
-# class PersonSchema(ObjectType):
+    class Meta:
+        model = PersonModel
+# class PersonType(ObjectType):
 #     class Meta:
 #         model = PersonSchema
 
-class PersonSchemaOutput(PersonSchema, ObjectType):
+class PersonSchemaOutput(PersonSchema, DjangoObjectType):
 # notice we only need ID in output and not in input of Mutation of Create
     id = graphene.ID
+
+    class Meta:
+        model = PersonModel
     pass
 
 
 class PersonSchemaInputCreate(PersonSchema, InputObjectType):
     id = graphene.ID
+
+    class Meta:
+        model = PersonModel
     pass 
 
 
@@ -34,9 +43,12 @@ class PersonSchemaInputUpdate(InputObjectType):
     id = graphene.ID
     name = String,
     age = Int,
+
+    class Meta:
+        model = PersonModel
     pass
 
-class CreatePerson(graphene.Mutation):
+class CreatePerson(ObjectType):
     ok = Boolean()
 
     class Arguments:
