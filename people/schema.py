@@ -14,17 +14,17 @@ class PersonSchema(ObjectType):
     address_one = graphene.NonNull(String),
     address_two = String
 
-class PersonType(ObjectType):
-    class Meta:
-        model = PersonSchema
+# class PersonSchema(ObjectType):
+#     class Meta:
+#         model = PersonSchema
 
-class PersonSchemaOutput(PersonType, ObjectType):
+class PersonSchemaOutput(PersonSchema, ObjectType):
 # notice we only need ID in output and not in input of Mutation of Create
     id = graphene.ID
     pass
 
 
-class PersonSchemaInputCreate(PersonType, InputObjectType):
+class PersonSchemaInputCreate(PersonSchema, InputObjectType):
     id = graphene.ID
     pass 
 
@@ -38,8 +38,6 @@ class PersonSchemaInputUpdate(InputObjectType):
 
 class CreatePerson(graphene.Mutation):
     ok = Boolean()
-    # person = Field(PersonSchema)
-    # print(person)
 
     class Arguments:
         first_name = graphene.String()
@@ -92,13 +90,13 @@ class CreatePerson(graphene.Mutation):
 
 
 class Query(object):
-    all_Persons = graphene.List(PersonType)
-    person = Field(PersonType)
+    all_Persons = graphene.List(PersonSchema)
+    person = Field(PersonSchema)
     ok = Boolean()
 
     @classmethod
     def mutate(cls, root, info, text, id):
-        person = PersonType.objects.get(pk=id)
+        person = PersonSchema.objects.get(pk=id)
         person.text = text
         person.save()
         # Notice we return an instance of this mutation
@@ -109,14 +107,14 @@ class Query(object):
         result = []
         for person_db in person_set:
             person_data_class = cattr.structure(person_db, PersonModel)
-            result.append(PersonType)   
+            result.append(PersonSchema)   
 
 # class CreatePerson(graphene.Mutation):
 #     class Arguments:
 #         # input
-#         person_data = PersonTypeInputCreate(Required=True)
+#         person_data = PersonSchemaInputCreate(Required=True)
 #         # output will be the created person
-#         person = Argument(PersonTypeOutput)
+#         person = Argument(PersonSchemaOutput)
 #         ok = graphene.Boolean()
 
 #     @classmethod
@@ -176,4 +174,4 @@ class UpdatePerson(graphene.Mutation):
         
 class Mutation(graphene.ObjectType):
     create_person = CreatePerson.Field()
-    # update_person = UpdatePerson.Field()
+    update_person = UpdatePerson.Field()
