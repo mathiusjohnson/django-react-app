@@ -7,6 +7,8 @@ const AllPersonsQuery = `
       id
       name
       age
+      addressOne
+      addressTwo
     }
   }
 `;
@@ -30,10 +32,12 @@ export const People = () => {
   })
   return (
     <div>
-      <div className="grid grid-cols-2 m-2">
-        <div className="flex justify-between col-span-1">
+      <div className="grid grid-cols-5 m-2">
+        <div className="grid grid-cols-4 col-span-4">
           <p>Name</p>
           <p>Age</p>
+          <p>Address One</p>
+          <p>Address Two</p>
         </div>
         <div>
           Actions

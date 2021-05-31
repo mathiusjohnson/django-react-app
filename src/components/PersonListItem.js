@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
 import useVisualMode from '../hooks/useVisualMode'
 import { useMutation } from 'urql';
 import Status from "./Status";
 import EditPerson from './EditPerson';
+import ShowPerson from './ShowPerson';
 
 // const EMPTY = "EMPTY";
 const SHOW = "SHOW";
@@ -14,7 +14,7 @@ const DELETING = "DELETING";
 const EDIT = "EDIT";
 const ERROR_SAVE = "ERROR_SAVE";
 
-const updatePersonQuery = `
+const UPDATE_PERSON_QUERY = `
 mutation ($id: ID!, $name: String!, $age: Int!) {
     updatePerson (personData: {id: $id, name: $name, age: $age }) {
         person {
@@ -28,7 +28,7 @@ mutation ($id: ID!, $name: String!, $age: Int!) {
 const PersonListItem = ({person}) => {
     const { mode, transition, back } = useVisualMode(SHOW);
     const [personState, updatePersonState] = useState(person)
-    const [updatePersonResult, updatePerson] = useMutation(updatePersonQuery);
+    const [updatePersonResult, updatePerson] = useMutation(UPDATE_PERSON_QUERY);
 
 
     const onEditClicked = () => {
@@ -58,6 +58,7 @@ const PersonListItem = ({person}) => {
                 }) 
     }
 
+    console.log(person.addressOne);
     return (
         <div>
 
@@ -66,17 +67,7 @@ const PersonListItem = ({person}) => {
             {mode === DELETING && <Status message="Deleting..." />}
 
             {mode === 'SHOW' && (
-                <div className="grid grid-cols-2 justify-between items-center m-2">
-                    <div className="flex justify-between">
-                    <p>{personState.name}</p>
-                    <span>{personState.age}</span>
-                    </div>
-                    <div>
-                    <Button onClick={() => onEditClicked()} variant="contained" color="primary">
-                        Edit
-                    </Button>
-                    </div>
-                </div>
+                <ShowPerson personState={personState} onEditClicked={onEditClicked} addressOne={person.addressOne} addressTwo={person.addressOne} />
             )}
 
             {mode === 'EDIT' && (
@@ -84,8 +75,10 @@ const PersonListItem = ({person}) => {
                     id={person.id}
                     onCancel={back}
                     onSave={save}
-                    oldName={person.name}
-                    oldAge={person.age}
+                    oldName={personState.name}
+                    oldAge={personState.age}
+                    addressOne={person.addressOne}
+                    addressTwo={person.addressTwo}
                 />
             )}
         </div>
