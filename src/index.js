@@ -1,13 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import './styles/index.css';
+import App from './components/App';
 import reportWebVitals from './reportWebVitals';
+import { createClient, Provider } from 'urql';
+import { getToken } from './token';
+
+const client = createClient({
+  url: 'http://localhost:8000/graphql/',
+  fetchOptions: () => {
+    const token = getToken();
+    return {
+      headers: { authorization: token ? `Bearer ${token}` : '' },
+    };
+  },
+});
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider value={client}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root')
 );
 
