@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "graphene_django",
+    'graphene_django',
     'people',
 ]
 
@@ -79,7 +79,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "people",
         "USER": "peopleuser",
-        "PASSWORD": "mypassword",
+        "PASSWORD": "people",
         "HOST": "localhost",
         "PORT": "54321",
     }

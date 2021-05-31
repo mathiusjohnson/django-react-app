@@ -1,7 +1,6 @@
-from django.db import models
-from django.contrib.postgres.fields.jsonb import JSONField
+from django.db.models import JSONField, Model
 
 # Create your models here.
 
-class PersonModel(models.Model):
+class PersonModel(Model):
     data = JSONField(null=True)

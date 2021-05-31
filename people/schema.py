@@ -76,6 +76,7 @@ class CreatePerson(Mutation):
             address_one=person_db_record.data["address_one"],
             address_two=person_db_record.data["address_two"],
             )
+        print("THIS IS THE PRINT: ", person_data, person_instance)
         return CreatePerson(person=person_instance, ok=True)
 
 
