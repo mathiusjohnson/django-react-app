@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useVisualMode from '../hooks/useVisualMode'
+import useVisualMode from '../../hooks/useVisualMode'
 import { useMutation } from 'urql';
 import Status from "./Status";
 import EditPerson from './EditPerson';
@@ -33,9 +33,7 @@ const PersonListItem = ({person}) => {
     }
 
     function save(newName, newAge) {
-
         const id = person.id
-
         const variables = { id, name: newName || '', age: newAge || '' };
 
         transition(SAVING);
@@ -55,8 +53,7 @@ const PersonListItem = ({person}) => {
             }) 
     }
 
-    console.log(updatePersonResult);
-
+    console.log(personState, person);
     if (!updatePersonResult.fetching) {
         return (
             <div>
@@ -66,7 +63,7 @@ const PersonListItem = ({person}) => {
                 {mode === DELETING && <Status message="Deleting..." />}
     
                 {mode === 'SHOW' && (
-                    <ShowPerson personState={personState} onEditClicked={onEditClicked} addressOne={person.addressOne} addressTwo={person.addressOne} />
+                    <ShowPerson personState={personState} onEditClicked={onEditClicked} addressOne={person.addressOne} addressTwo={person.addressTwo} />
                 )}
     
                 {mode === 'EDIT' && (

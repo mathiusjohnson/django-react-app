@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core';
 import { useQuery } from 'urql';
 import useVisualMode from '../hooks/useVisualMode'
 import CreatePerson from './CreatePerson';
-import PersonListItem from './PersonListItem';
+import PersonListItem from './PersonListItem/index';
 
 
 const SHOW = "SHOW";
