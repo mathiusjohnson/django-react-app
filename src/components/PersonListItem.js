@@ -5,12 +5,9 @@ import Status from "./Status";
 import EditPerson from './EditPerson';
 import ShowPerson from './ShowPerson';
 
-// const EMPTY = "EMPTY";
 const SHOW = "SHOW";
-// const CREATE = "CREATE";
 const SAVING = "SAVING";
 const DELETING = "DELETING";
-// const CONFIRM = "CONFIRM";
 const EDIT = "EDIT";
 const ERROR_SAVE = "ERROR_SAVE";
 
@@ -42,20 +39,20 @@ const PersonListItem = ({person}) => {
         const variables = { id, name: newName || '', age: newAge || '' };
 
         transition(SAVING);
-            updatePerson(variables)
-                .then(result => {
-                    console.log(result);
-                    if (result.error) {
-                        console.error('Oh no!', result.error);
-                    } else {
-                        const updatedPerson = result.data.updatePerson.person
-                        updatePersonState(updatedPerson)
-                    }
-                })
-                .then(() => transition(SHOW))
-                .catch((error) =>{
-                    transition(ERROR_SAVE, true);
-                }) 
+        updatePerson(variables)
+            .then(result => {
+                console.log(result);
+                if (result.error) {
+                    console.error('Oh no!', result.error);
+                } else {
+                    const updatedPerson = result.data.updatePerson.person
+                    updatePersonState(updatedPerson)
+                }
+            })
+            .then(() => transition(SHOW))
+            .catch((error) =>{
+                transition(ERROR_SAVE, true);
+            }) 
     }
 
     console.log(person.addressOne);

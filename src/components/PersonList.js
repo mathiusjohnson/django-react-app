@@ -1,5 +1,13 @@
+import { Button } from '@material-ui/core';
 import { useQuery } from 'urql';
+import useVisualMode from '../hooks/useVisualMode'
+import CreatePerson from './CreatePerson';
 import PersonListItem from './PersonListItem';
+
+
+const SHOW = "SHOW";
+const CREATE = "CREATE";
+const SAVING = "SAVING";
 
 const AllPersonsQuery = `
   query {
@@ -14,6 +22,8 @@ const AllPersonsQuery = `
 `;
 
 export const People = () => {
+  const { mode, transition, back } = useVisualMode(SHOW);
+
   const [result, reexecuteQuery] = useQuery({
     query: AllPersonsQuery,
   });
@@ -30,22 +40,28 @@ export const People = () => {
       </li>
     )
   })
+
+  const onCreateClicked = () => {
+    transition(CREATE)
+  }
+
+
   return (
     <div>
-      <div className="grid grid-cols-5 m-2">
-        <div className="grid grid-cols-4 col-span-4">
-          <p>Name</p>
-          <p>Age</p>
-          <p>Address One</p>
-          <p>Address Two</p>
-        </div>
-        <div>
-          Actions
-        </div>
-      </div>
+      
       <ul>
         {renderedPersons}
       </ul>
+
+      {mode === 'SHOW' && (
+        <Button onClick={() => onCreateClicked()} variant="contained" color="primary">
+          Add New Person
+        </Button>
+      )}
+
+      {mode === 'CREATE' && (
+        <CreatePerson onCancel={back} />
+      )}
       
     </div>
   );

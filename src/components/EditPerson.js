@@ -60,8 +60,6 @@ export default function EditPerson ({id, oldName, oldAge, onCancel, onSave, addr
                 setAge(event.target.value) 
                 setError("")
               }}
-              data-testid=""
-              rows="4"
             />
           </form>
         <p>{addressOne}</p>
