@@ -12,16 +12,16 @@ class PersonSchemaOutput(ObjectType):
     address_two = NonNull(String)
 
 class PersonSchemaInputCreate(InputObjectType):
-    name = String()
-    age = Int()
-    address_one = String()
-    address_two = String()
+    name = NonNull(String)
+    age = NonNull(Int)
+    address_one = NonNull(String)
+    address_two = NonNull(String)
 
 class PersonSchemaInputUpdate(InputObjectType):
 # lets say we only allow update of following
     id = ID()
-    name = String()
-    age = Int()
+    name = NonNull(String)
+    age = NonNull(Int)
 
 class Query(ObjectType):
     all_persons = List(PersonSchemaOutput)
