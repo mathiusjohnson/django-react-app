@@ -20,8 +20,8 @@ class PersonSchemaInputCreate(InputObjectType):
 class PersonSchemaInputUpdate(InputObjectType):
 # lets say we only allow update of following
     id = ID()
-    name = NonNull(String)
-    age = NonNull(Int)
+    name = String()
+    age = Int()
 
 class Query(ObjectType):
     all_persons = List(PersonSchemaOutput)
