@@ -42,6 +42,7 @@ export const People = () => {
       <ul>
         {renderedPersons}
       </ul>
+      
     </div>
   );
 };
