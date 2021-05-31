@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import Button from '@material-ui/core/Button';
 import { useMutation } from 'urql';
 import useVisualMode from '../hooks/useVisualMode'
+import { Backdrop } from "@material-ui/core";
 
 
 
 const SHOW = "SHOW";
 const SAVING = "SAVING";
-const DELETING = "DELETING";
-const EDIT = "EDIT";
 const ERROR_SAVE = "ERROR_SAVE";
 
 const CREATE_PERSON_QUERY = `
@@ -24,8 +23,8 @@ mutation ($name: String!, $age: Int!, $addressOne: String!, $addressTwo: String)
 }
 `
 
-export default function CreatePerson ({onCancel, onSave}) {
-  const { mode, transition, back } = useVisualMode(SHOW);
+export default function CreatePerson ({back}) {
+  const { transition } = useVisualMode(SHOW);
 
   const [name, setName] = useState();
   const [age, setAge] = useState();
@@ -42,7 +41,7 @@ export default function CreatePerson ({onCancel, onSave}) {
 
   const cancel = () => {
     reset();
-    onCancel();
+    back();
   };
 
   function save(newName, newAge) {
@@ -89,70 +88,76 @@ export default function CreatePerson ({onCancel, onSave}) {
     } 
   }
 
-  return (
-    <main className="grid grid-cols-5 items-center m-2">
-        <form className="col-span-4 grid grid-cols-4" autoComplete="off" onSubmit={(event) => event.preventDefault()}>
-
-          <input
-            className="border-2 border-solid border-green-500 rounded text-center mx-2"
-            name="name"
-            type="text"
-            placeholder="Enter Name"
-            value={name || "" }
-            onChange={(event) => {
-              setName(event.target.value) 
-              setError("")
-            }}
-            data-testid=""
-          />
-
-          <input
-            className="border-2 border-solid border-green-500 rounded text-center mx-2"
-            name="name"
-            type="number"
-            placeholder="Enter age"
-            value={age || "" }
-            onChange={(event) => {
-              setAge(event.target.value) 
-              setError("")
-            }}
-          />
-
-          <input
-            className="border-2 border-solid border-green-500 rounded text-center mx-2"
-            name="addressOne"
-            type="number"
-            placeholder="Address One"
-            value={addressOne || "" }
-            onChange={(event) => {
-              setAddressOne(event.target.value) 
-              setError("")
-            }}
-          />
-
-          <input
-            className="border-2 border-solid border-green-500 rounded text-center mx-2"
-            name="addressTwo"
-            type="number"
-            placeholder="Address Two"
-            value={addressTwo || "" }
-            onChange={(event) => {
-              setAddressTwo(event.target.value) 
-              setError("")
-            }}
-          />
-
-          <div className="">{error}</div>
-
-        </form>
-      <section className="">
-          <Button onClick={cancel} danger="true" color="secondary">
-            Cancel
-          </Button>
-          <Button onClick={() => validate()} confirm="true" color="primary">
-            Save
-          </Button>
-      </section>
-    </main>
-  );
+  if (!createPersonResult.fetching) {
+    return (
+      <main className="grid grid-cols-5 items-center m-2">
+          <form className="col-span-4 grid grid-cols-4" autoComplete="off" onSubmit={(event) => event.preventDefault()}>
+  
+            <input
+              className="border-2 border-solid border-green-500 rounded text-center mx-2"
+              name="name"
+              type="text"
+              placeholder="Enter Name"
+              value={name || "" }
+              onChange={(event) => {
+                setName(event.target.value) 
+                setError("")
+              }}
+              data-testid=""
+            />
+  
+            <input
+              className="border-2 border-solid border-green-500 rounded text-center mx-2"
+              name="name"
+              type="number"
+              placeholder="Enter age"
+              value={age || "" }
+              onChange={(event) => {
+                setAge(event.target.value) 
+                setError("")
+              }}
+            />
+  
+            <input
+              className="border-2 border-solid border-green-500 rounded text-center mx-2"
+              name="addressOne"
+              type="text"
+              placeholder="Address One"
+              value={addressOne || "" }
+              onChange={(event) => {
+                setAddressOne(event.target.value) 
+                setError("")
+              }}
+            />
+  
+            <input
+              className="border-2 border-solid border-green-500 rounded text-center mx-2"
+              name="addressTwo"
+              type="text"
+              placeholder="Address Two"
+              value={addressTwo || "" }
+              onChange={(event) => {
+                setAddressTwo(event.target.value) 
+                setError("")
+              }}
+            />
+  
+            <div className="">{error}</div>
+  
+          </form>
+        <section className="">
+            <Button onClick={cancel} danger="true" color="secondary">
+              Cancel
+            </Button>
+            <Button onClick={() => validate()} confirm="true" color="primary">
+              Save
+            </Button>
+        </section>
+      </main>
+    );
+  } else {
+    return (
+      <div>Adding Person...</div>
+    )
+  }
 }

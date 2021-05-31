@@ -7,7 +7,6 @@ import PersonListItem from './PersonListItem';
 
 const SHOW = "SHOW";
 const CREATE = "CREATE";
-const SAVING = "SAVING";
 
 const AllPersonsQuery = `
   query {
@@ -25,7 +24,7 @@ export const People = () => {
   const { mode, transition, back } = useVisualMode(SHOW);
 
   const [result, reexecuteQuery] = useQuery({
-    query: AllPersonsQuery,
+    query: AllPersonsQuery
   });
 
   const { data, fetching, error } = result;
@@ -45,7 +44,6 @@ export const People = () => {
     transition(CREATE)
   }
 
-
   return (
     <div>
       
@@ -60,7 +58,7 @@ export const People = () => {
       )}
 
       {mode === 'CREATE' && (
-        <CreatePerson onCancel={back} />
+        <CreatePerson back={back} />
       )}
       
     </div>

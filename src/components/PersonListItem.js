@@ -55,31 +55,38 @@ const PersonListItem = ({person}) => {
             }) 
     }
 
-    console.log(person.addressOne);
-    return (
-        <div>
+    console.log(updatePersonResult);
 
-            {mode === SAVING && <Status message="Saving" />}
-
-            {mode === DELETING && <Status message="Deleting..." />}
-
-            {mode === 'SHOW' && (
-                <ShowPerson personState={personState} onEditClicked={onEditClicked} addressOne={person.addressOne} addressTwo={person.addressOne} />
-            )}
-
-            {mode === 'EDIT' && (
-                <EditPerson
-                    id={person.id}
-                    onCancel={back}
-                    onSave={save}
-                    oldName={personState.name}
-                    oldAge={personState.age}
-                    addressOne={person.addressOne}
-                    addressTwo={person.addressTwo}
-                />
-            )}
-        </div>
-    );
+    if (!updatePersonResult.fetching) {
+        return (
+            <div>
+    
+                {mode === SAVING && <Status message="Saving" />}
+    
+                {mode === DELETING && <Status message="Deleting..." />}
+    
+                {mode === 'SHOW' && (
+                    <ShowPerson personState={personState} onEditClicked={onEditClicked} addressOne={person.addressOne} addressTwo={person.addressOne} />
+                )}
+    
+                {mode === 'EDIT' && (
+                    <EditPerson
+                        id={person.id}
+                        onCancel={back}
+                        onSave={save}
+                        oldName={personState.name}
+                        oldAge={personState.age}
+                        addressOne={person.addressOne}
+                        addressTwo={person.addressTwo}
+                    />
+                )}
+            </div>
+        );
+    } else {
+        return (
+            <div>Updating User...</div>
+        )
+    }
 };
 
 export default PersonListItem;
