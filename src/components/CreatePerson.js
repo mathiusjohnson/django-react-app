@@ -66,22 +66,23 @@ export default function CreatePerson ({back}) {
 }
 
   function validate() {
-    if (name === "") {
+    console.log(name, age, addressOne);
+    if (name === undefined) {
       setError("Name cannot be blank");
       return;
     }
 
-    if (age === null) {
+    if (age === undefined) {
       setError("Age cannot be blank")
       return;
     }
 
-    if (addressOne === null) {
+    if (addressOne === undefined) {
       setError("Address Line One cannot be blank")
       return;
     }
 
-    if (name !== "" && age !== null){
+    if (name !== undefined && age !== undefined && addressOne !== undefined){
       setError("");
       save(name, age, addressOne, addressTwo)
     } 
@@ -141,7 +142,6 @@ export default function CreatePerson ({back}) {
               }}
             />
   
-            <div className="">{error}</div>
   
           </form>
         <section className="">
@@ -152,6 +152,7 @@ export default function CreatePerson ({back}) {
               Save
             </Button>
         </section>
+        <div className="col-span-5 text-red-500"> {error}</div>
       </main>
     );
   } else {
