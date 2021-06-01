@@ -36,7 +36,7 @@ query{
 export const People = () => {
   const { mode, transition, back } = useVisualMode(SHOW);
 
-  const [result, _] = useQuery({
+  const [result, reexecuteQuery] = useQuery({
     query: AllPersonsQuery
   });
 
@@ -45,10 +45,15 @@ export const People = () => {
   if (fetching) return <p>Loading...</p>;
   if (error) return <p>Oh no... {error.message}</p>;
 
+  const refresh = () => {
+    // Refetch the query and skip the cache
+    reexecuteQuery({ requestPolicy: 'network-only' });
+  };
+
   const renderedPersons = data.allPersons.map((person, index) => {
     return (
       <li>
-        <PersonListItem key={index} person={person} />
+        <PersonListItem refresh={refresh} key={index} person={person} />
       </li>
     )
   })
@@ -57,6 +62,8 @@ export const People = () => {
     transition(CREATE)
   }
 
+
+  
   return (
     <div>
       
@@ -65,9 +72,11 @@ export const People = () => {
       </ul>
 
       {mode === 'SHOW' && (
-        <Button onClick={() => onCreateClicked()} variant="contained" color="primary">
-          Add New Person
-        </Button>
+        <div className="mb-4">
+          <Button onClick={() => onCreateClicked()} variant="contained" color="primary">
+            Add New Person
+          </Button>
+        </div>
       )}
 
       {mode === 'CREATE' && (

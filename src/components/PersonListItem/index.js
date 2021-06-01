@@ -1,10 +1,10 @@
 import React from 'react';
 import PersonListItem from './PersonListItem';
 
-const index = ({person}) => {
+const index = ({person, refresh}) => {
   return (
     <div>
-      <PersonListItem person={person} />
+      <PersonListItem refresh={refresh} person={person} />
     </div>
   );
 };

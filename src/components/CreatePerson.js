@@ -83,19 +83,20 @@ export default function CreatePerson ({back}) {
   function save(newName, newAge) {
     console.log('save!!!');
 
+
     const variables = { 
       name: newName || '', 
       age: newAge || '', 
-      streetOne: addressOneStreet,
-      cityOne: addressOneCity,
-      regionOne: addressOneRegion,
-      countryOne: addressOneCountry,
-      postalCodeOne: addressOnePostal,
-      streetTwo: addressTwoStreet,
-      cityTwo: addressTwoCity,
-      regionTwo: addressTwoRegion,
-      countryTwo: addressTwoCountry,
-      postalCodeTwo: addressTwoPostal   
+      streetOne: addressOneStreet || '',
+      cityOne: addressOneCity || '',
+      regionOne: addressOneRegion || '',
+      countryOne: addressOneCountry || '',
+      postalCodeOne: addressOnePostal || '',
+      streetTwo: addressTwoStreet || '',
+      cityTwo: addressTwoCity || '',
+      regionTwo: addressTwoRegion || '',
+      countryTwo: addressTwoCountry || '',
+      postalCodeTwo: addressTwoPostal || ''   
     };
 
     console.log(variables);

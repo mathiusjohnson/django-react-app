@@ -22,7 +22,7 @@ mutation ($id: ID!, $name: String!, $age: Int!) {
 }
 `
 
-const PersonListItem = ({person}) => {
+const PersonListItem = ({person, refresh}) => {
     const { mode, transition, back } = useVisualMode(SHOW);
     const [personState, updatePersonState] = useState(person)
     const [updatePersonResult, updatePerson] = useMutation(UPDATE_PERSON_QUERY);
@@ -64,7 +64,13 @@ const PersonListItem = ({person}) => {
                 {mode === DELETING && <Status message="Deleting..." />}
     
                 {mode === 'SHOW' && (
-                    <ShowPerson personState={personState} onEditClicked={onEditClicked} addressOne={person.addressOne} addressTwo={person.addressTwo} />
+                    <ShowPerson 
+                        personState={personState} 
+                        onEditClicked={onEditClicked} 
+                        addressOne={person.addressOne} 
+                        addressTwo={person.addressTwo}
+                        refresh={refresh}
+                    />
                 )}
     
                 {mode === 'EDIT' && (
