@@ -3,8 +3,6 @@ import Button from '@material-ui/core/Button';
 import { useMutation } from 'urql';
 import useVisualMode from '../hooks/useVisualMode'
 
-
-
 const SHOW = "SHOW";
 const SAVING = "SAVING";
 const ERROR_SAVE = "ERROR_SAVE";
@@ -63,21 +61,27 @@ export default function CreatePerson ({back}) {
         .catch((error) =>{
             transition(ERROR_SAVE, true);
         }) 
-}
+  }
+
+  const [nameBorder, setNameBorder] = useState("green")
+  const [ageBorder, setAgeBorder] = useState("green")
+  const [addressBorder, setAddressBorder] = useState("green")
 
   function validate() {
-    console.log(name, age, addressOne);
     if (name === undefined) {
+      setNameBorder("red")
       setError("Name cannot be blank");
       return;
     }
 
     if (age === undefined) {
+      setAgeBorder("red")
       setError("Age cannot be blank")
       return;
     }
 
     if (addressOne === undefined) {
+      setAddressBorder("red")
       setError("Address Line One cannot be blank")
       return;
     }
@@ -94,38 +98,41 @@ export default function CreatePerson ({back}) {
           <form className="col-span-4 grid grid-cols-4" autoComplete="off" onSubmit={(event) => event.preventDefault()}>
   
             <input
-              className="border-2 border-solid border-green-500 rounded text-center mx-2"
+              className={`border-2 border-solid border-${nameBorder}-500 rounded text-center mx-2`}
               name="name"
               type="text"
               placeholder="Enter Name"
               value={name || "" }
               onChange={(event) => {
                 setName(event.target.value) 
+                setNameBorder("green")
                 setError("")
               }}
               data-testid=""
             />
   
             <input
-              className="border-2 border-solid border-green-500 rounded text-center mx-2"
-              name="name"
+              className={`border-2 border-solid border-${ageBorder}-500 rounded text-center mx-2`}
+              name="age"
               type="number"
               placeholder="Enter age"
               value={age || "" }
               onChange={(event) => {
                 setAge(event.target.value) 
+                setAgeBorder("green")
                 setError("")
               }}
             />
   
             <input
-              className="border-2 border-solid border-green-500 rounded text-center mx-2"
+              className={`border-2 border-solid border-${addressBorder}-500 rounded text-center mx-2`}
               name="addressOne"
               type="text"
               placeholder="Address One"
               value={addressOne || "" }
               onChange={(event) => {
                 setAddressOne(event.target.value) 
+                addressBorder = "green"
                 setError("")
               }}
             />

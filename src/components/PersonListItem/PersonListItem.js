@@ -51,8 +51,9 @@ const PersonListItem = ({person}) => {
             .catch((error) =>{
                 transition(ERROR_SAVE, true);
             }) 
-    }
+    }   
 
+    console.log(updatePersonResult);
     console.log(personState, person);
     if (!updatePersonResult.fetching) {
         return (
