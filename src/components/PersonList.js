@@ -9,21 +9,34 @@ const SHOW = "SHOW";
 const CREATE = "CREATE";
 
 const AllPersonsQuery = `
-  query {
-    allPersons {
-      id
-      name
-      age
-      addressOne
-      addressTwo
+query{
+  allPersons{
+    id
+    name
+    age
+    addressOne{
+      street
+      city
+      region
+      country
+      postalCode
     }
+    # addressTwo
+    addressTwo{
+      street
+      city
+      region
+      country
+      postalCode
+    }  
   }
+}
 `;
 
 export const People = () => {
   const { mode, transition, back } = useVisualMode(SHOW);
 
-  const [result, reexecuteQuery] = useQuery({
+  const [result, _] = useQuery({
     query: AllPersonsQuery
   });
 
