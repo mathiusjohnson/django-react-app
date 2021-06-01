@@ -37,10 +37,10 @@ const ShowPerson = ({personState, addressOne, addressTwo, onEditClicked, refresh
             }
             <div>
                 <div className="flex space-x-2">
-                    <Button onClick={() => onEditClicked()} variant="contained" color="primary">
+                    <Button onClick={() => onEditClicked()} variant="contained" color="default">
                         Edit
                     </Button>
-                    <Button onClick={() => onDeleteClicked()} variant="contained" color="primary">
+                    <Button onClick={() => onDeleteClicked()} variant="contained" color="secondary">
                         Delete
                     </Button>
                 </div>

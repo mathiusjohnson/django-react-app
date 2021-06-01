@@ -63,7 +63,8 @@ export default function CreatePerson ({back}) {
   const [addressTwoCity, setAddressTwoCity] = useState();
   const [addressTwoRegion, setAddressTwoRegion] = useState();
   const [addressTwoCountry, setAddressTwoCountry] = useState();
-  const [addressTwoPostal, setAddressTwoPostal] = useState();  const [nameBorder, setNameBorder] = useState("gray")
+  const [addressTwoPostal, setAddressTwoPostal] = useState();  
+  const [nameBorder, setNameBorder] = useState("gray")
   const [ageBorder, setAgeBorder] = useState("gray")
   const [addressBorder, setAddressBorder] = useState("gray")
   const [error, setError] = useState();
@@ -115,53 +116,16 @@ export default function CreatePerson ({back}) {
         })
         .then(() => transition(SHOW))
         .catch((error) =>{
-            transition(ERROR_SAVE, true);
+            console.error(error);;
         }) 
-  }
-
-  function validate() {
-    if (name === undefined) {
-      setNameBorder("red")
-      setError("Name cannot be blank");
-      return;
-    }
-
-    if (age === undefined) {
-      setAgeBorder("red")
-      setError("Age cannot be blank")
-      return;
-    }
-
-    // if (addressOneStreet === undefined) {
-    //   setAddressBorder("red")
-    //   setError("Address Line One cannot be blank")
-    //   return;
-    // }
-    // if (addressOneStreet === undefined) {
-    //   setAddressBorder("red")
-    //   setError("Address Line One cannot be blank")
-    //   return;
-    // }
-    // if (addressOneStreet === undefined) {
-    //   setAddressBorder("red")
-    //   setError("Address Line One cannot be blank")
-    //   return;
-    // }
-
-
-    if (name !== undefined && age !== undefined && addressOneStreet !== undefined){
-      console.log('validated!');
-      setError("");
-      save(name, age)
-    } 
   }
 
   if (!createPersonResult.fetching) {
     return (
-      <main className="grid grid-cols-7 items-center m-2 mt-4">
-          <form className="col-span-6 grid grid-cols-6" autoComplete="off" onSubmit={(event) => event.preventDefault()}>
-            <div className="space-y-2">
-              <label htmlFor="nameAge">Name and Age</label>
+      <main className="items-center m-2 mt-4">
+          <form className="grid grid-cols-6" autoComplete="off" onSubmit={(event) => event.preventDefault()}>
+            <div className="col-span-6">
+              <label htmlFor="name">Name:</label>
               <input
                 className={`border-2 border-solid border-${nameBorder}-500 rounded text-center mx-2`}
                 name="name"
@@ -175,7 +139,7 @@ export default function CreatePerson ({back}) {
                 }}
                 data-testid=""
               />
-    
+              <label htmlFor="name">Age:</label>
               <input
                 className={`border-2 border-solid border-${ageBorder}-500 rounded text-center mx-2`}
                 name="age"
@@ -190,131 +154,153 @@ export default function CreatePerson ({back}) {
               />
             </div>
 
-            <div className="flex flex-wrap col-span-2 space-y-2">
-
-              <input
-                className={`border-2 border-solid border-${addressBorder}-500 rounded text-center mx-2`}
-                name="addressOne"
-                type="text"
-                placeholder="Enter Street"
-                value={addressOneStreet || "" }
-                onChange={(event) => {
-                  setAddressOneStreet(event.target.value) 
-                  setAddressBorder("green")
-                  setError("")
-                }}
-              />
-              <input
-                className={`border-2 border-solid border-${addressBorder}-500 rounded text-center mx-2`}
-                name="addressOne"
-                type="text"
-                placeholder="Enter City"
-                value={addressOneCity || "" }
-                onChange={(event) => {
-                  setAddressOneCity(event.target.value) 
-                  setAddressBorder("green")
-                  setError("")
-                }}
-              />
-              <input
-                className={`border-2 border-solid border-${addressBorder}-500 rounded text-center mx-2`}
-                name="addressOne"
-                type="text"
-                placeholder="Enter Region"
-                value={addressOneRegion || "" }
-                onChange={(event) => {
-                  setAddressOneRegion(event.target.value) 
-                  setAddressBorder("green")
-                  setError("")
-                }}
-              />
-              <input
-                className={`border-2 border-solid border-${addressBorder}-500 rounded text-center mx-2`}
-                name="addressOne"
-                type="text"
-                placeholder="Enter Country"
-                value={addressOneCountry || "" }
-                onChange={(event) => {
-                  setAddressOneCountry(event.target.value) 
-                  setAddressBorder("green")
-                  setError("")
-                }}
-              />
-              <input
-                className={`border-2 border-solid border-${addressBorder}-500 rounded text-center mx-2`}
-                name="addressOne"
-                type="text"
-                placeholder="Enter Postal Code"
-                value={addressOnePostal || "" }
-                onChange={(event) => {
-                  setAddressOnePostal(event.target.value) 
-                  setAddressBorder("green")
-                  setError("")
-                }}
-              />
+            <div className="flex flex-wrap justify-center col-span-3">
+              <div className="w-full">Address One:</div>
+                <div>
+                  <input
+                    className={`border-2 border-solid border-${addressBorder}-500 rounded text-center m-1`}
+                    name="addressOne"
+                    type="text"
+                    placeholder="Enter Street"
+                    value={addressOneStreet || "" }
+                    onChange={(event) => {
+                      setAddressOneStreet(event.target.value) 
+                      setAddressBorder("green")
+                      setError("")
+                    }}
+                  />
+                </div>
+                <div>
+                  <input
+                    className={`border-2 border-solid border-${addressBorder}-500 rounded text-center m-1`}
+                    name="addressOne"
+                    type="text"
+                    placeholder="Enter City"
+                    value={addressOneCity || "" }
+                    onChange={(event) => {
+                      setAddressOneCity(event.target.value) 
+                      setAddressBorder("green")
+                      setError("")
+                    }}
+                  />
+                </div>
+                <div>
+                  <input
+                    className={`border-2 border-solid border-${addressBorder}-500 rounded text-center m-1`}
+                    name="addressOne"
+                    type="text"
+                    placeholder="Enter Region"
+                    value={addressOneRegion || "" }
+                    onChange={(event) => {
+                      setAddressOneRegion(event.target.value) 
+                      setAddressBorder("green")
+                      setError("")
+                    }}
+                  />
+                </div>
+                <div>
+                  <input
+                    className={`border-2 border-solid border-${addressBorder}-500 rounded text-center m-1`}
+                    name="addressOne"
+                    type="text"
+                    placeholder="Enter Country"
+                    value={addressOneCountry || "" }
+                    onChange={(event) => {
+                      setAddressOneCountry(event.target.value) 
+                      setAddressBorder("green")
+                      setError("")
+                    }}
+                  />
+                </div>
+                <div>
+                  <input
+                    className={`border-2 border-solid border-${addressBorder}-500 rounded text-center m-1`}
+                    name="addressOne"
+                    type="text"
+                    placeholder="Enter Postal Code"
+                    value={addressOnePostal || "" }
+                    onChange={(event) => {
+                      setAddressOnePostal(event.target.value) 
+                      setAddressBorder("green")
+                      setError("")
+                    }}
+                  />
+                </div>
             </div>
   
-            <div className="flex flex-wrap col-span-2 space-y-2">
-              <input
-                className={`border-2 border-solid border-${addressBorder}-500 rounded text-center mx-2`}
-                name="addressTwo"
-                type="text"
-                placeholder="Enter Street"
-                value={addressTwoStreet || "" }
-                onChange={(event) => {
-                  setAddressTwoStreet(event.target.value) 
-                  setAddressBorder("green")
-                  setError("")
-                }}
-              />
-              <input
-                className={`border-2 border-solid border-${addressBorder}-500 rounded text-center mx-2`}
-                name="addressTwo"
-                type="text"
-                placeholder="Enter City"
-                value={addressTwoCity || "" }
-                onChange={(event) => {
-                  setAddressTwoCity(event.target.value) 
-                  setAddressBorder("green")
-                  setError("")
-                }}
-              />
-              <input
-                className={`border-2 border-solid border-${addressBorder}-500 rounded text-center mx-2`}
-                name="addressTwo"
-                type="text"
-                placeholder="Enter Region"
-                value={addressTwoRegion || "" }
-                onChange={(event) => {
-                  setAddressTwoRegion(event.target.value) 
-                  setAddressBorder("green")
-                  setError("")
-                }}
-              />
-              <input
-                className={`border-2 border-solid border-${addressBorder}-500 rounded text-center mx-2`}
-                name="addressTwo"
-                type="text"
-                placeholder="Enter Country"
-                value={addressTwoCountry || "" }
-                onChange={(event) => {
-                  setAddressTwoCountry(event.target.value) 
-                  setAddressBorder("green")
-                  setError("")
-                }}
-              />
-              <input
-                className={`border-2 border-solid border-${addressBorder}-500 rounded text-center mx-2`}
-                name="addressTwo"
-                type="text"
-                placeholder="Enter Postal Code"
-                value={addressTwoPostal || "" }
-                onChange={(event) => {
-                  setAddressTwoPostal(event.target.value) 
-                  setAddressBorder("green")
-                  setError("")
-                }}
-              />
+            <div className="flex flex-wrap justify-center col-span-3">
+            <div className="w-full">Address Two (Optional):</div>
+
+              <div>
+                <input
+                  className={`border-2 border-solid border-${addressBorder}-500 rounded text-center m-1`}
+                  name="addressTwo"
+                  type="text"
+                  placeholder="Enter Street"
+                  value={addressTwoStreet || "" }
+                  onChange={(event) => {
+                    setAddressTwoStreet(event.target.value) 
+                    setAddressBorder("green")
+                    setError("")
+                  }}
+                />
+              </div>
+              <div>
+                <input
+                  className={`border-2 border-solid border-${addressBorder}-500 rounded text-center m-1`}
+                  name="addressTwo"
+                  type="text"
+                  placeholder="Enter City"
+                  value={addressTwoCity || "" }
+                  onChange={(event) => {
+                    setAddressTwoCity(event.target.value) 
+                    setAddressBorder("green")
+                    setError("")
+                  }}
+                />
+              </div>
+              <div>
+                <input
+                  className={`border-2 border-solid border-${addressBorder}-500 rounded text-center m-1`}
+                  name="addressTwo"
+                  type="text"
+                  placeholder="Enter Region"
+                  value={addressTwoRegion || "" }
+                  onChange={(event) => {
+                    setAddressTwoRegion(event.target.value) 
+                    setAddressBorder("green")
+                    setError("")
+                  }}
+                />
+              </div>
+              <div>
+                <input
+                  className={`border-2 border-solid border-${addressBorder}-500 rounded text-center m-1`}
+                  name="addressTwo"
+                  type="text"
+                  placeholder="Enter Country"
+                  value={addressTwoCountry || "" }
+                  onChange={(event) => {
+                    setAddressTwoCountry(event.target.value) 
+                    setAddressBorder("green")
+                    setError("")
+                  }}
+                />
+              </div>
+              <div>
+                <input
+                  className={`border-2 border-solid border-${addressBorder}-500 rounded text-center m-1`}
+                  name="addressTwo"
+                  type="text"
+                  placeholder="Enter Postal Code"
+                  value={addressTwoPostal || "" }
+                  onChange={(event) => {
+                    setAddressTwoPostal(event.target.value) 
+                    setAddressBorder("green")
+                    setError("")
+                  }}
+                />
+              </div>
             </div>
   
   
@@ -323,7 +309,7 @@ export default function CreatePerson ({back}) {
             <Button onClick={cancel} danger="true" color="secondary">
               Cancel
             </Button>
-            <Button onClick={() => validate()} confirm="true" color="primary">
+            <Button onClick={() => save()} confirm="true" color="primary">
               Save
             </Button>
         </div>
