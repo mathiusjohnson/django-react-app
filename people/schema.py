@@ -86,7 +86,6 @@ class Query(ObjectType):
             country=person_db_record.data["address_two"]["country"] if isinstance(person_db_record.data["address_two"], dict) else "",
             postalCode=person_db_record.data["address_two"]["postalCode"] if isinstance(person_db_record.data["address_two"], dict) else ""
         )
-        # address_two=person_db_record.data["address_two"]
         )
 
         for person_db_record in persons_set
@@ -179,7 +178,6 @@ class CreatePerson(Mutation):
             address_one=person_db_record.data["address_one"],
             address_two=person_db_record.data["address_two"],
             )
-        print("THIS IS THE PRINT: ", person_data, person_instance)
         return CreatePerson(person=person_instance, ok=True)
 
 
@@ -225,17 +223,16 @@ class DeletePerson(Mutation):
   # The class attributes define the response of the mutation
   person = Field(PersonSchemaOutput)
 
+  deleted_id = Int()
   def mutate(self, info, id):
     person = PersonModel.objects.get(pk=id)
     if person is not None:
       person.delete()
-    return DeletePerson(person=person)
+    return DeletePerson(deleted_id=id)
 
 class Mutations(ObjectType):
     create_person = CreatePerson.Field()
     update_person = UpdatePerson.Field()
     delete_person = DeletePerson.Field()
-
-
 
 schema = Schema(query=Query, mutation=Mutations)
