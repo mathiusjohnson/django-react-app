@@ -12,12 +12,19 @@ class AddressSchemaOutput(ObjectType):
     country = NonNull(String)
     postalCode = NonNull(String)
 
+class AddressTwoSchemaOutput(ObjectType):
+    street = NonNull(String)
+    city = NonNull(String)
+    region = NonNull(String)
+    country = NonNull(String)
+    postalCode = NonNull(String)
+
 class PersonSchemaOutput(ObjectType):
     id = NonNull(ID)
     name = NonNull(String)
     age = NonNull(Int)
     address_one = NonNull(AddressSchemaOutput)
-    address_two = AddressSchemaOutput()
+    address_two = NonNull(AddressSchemaOutput)
 
 class AddressSchemaInputCreate(InputObjectType):
     street = NonNull(String)
@@ -41,11 +48,38 @@ class PersonSchemaInputUpdate(InputObjectType):
 class Query(ObjectType):
     all_persons = List(PersonSchemaOutput)
     person = Field(PersonSchemaOutput, person_id=Int())
-
+  
     def resolve_all_persons(self, _, **kwargs):
         persons_set = PersonModel.objects.all()
+
         return [
         PersonSchemaOutput(
+        id = person_db_record.id,
+        name = person_db_record.data["name"],
+        age = person_db_record.data["age"],
+        address_one = AddressSchemaOutput(
+            street=person_db_record.data["address_two"]["street"],
+            city=person_db_record.data["address_one"]["city"],
+            region=person_db_record.data["address_one"]["region"],
+            country=person_db_record.data["address_one"]["country"],
+            postalCode=person_db_record.data["address_one"]["postalCode"]
+        ),
+        address_two = AddressSchemaOutput(
+            street=person_db_record.data["address_two"]["street"],
+            city=person_db_record.data["address_two"]["city"],
+            region=person_db_record.data["address_two"]["region"],
+            country=person_db_record.data["address_two"]["country"],
+            postalCode=person_db_record.data["address_two"]["postalCode"]
+        )
+        # address_two=person_db_record.data["address_two"]
+        )
+
+        for person_db_record in persons_set
+        ]
+
+    def resolve_person(self, _, person_id):
+        person_db_record = PersonModel.objects.get(pk=person_id)
+        return PersonSchemaOutput(
         id = person_db_record.id,
         name= person_db_record.data["name"],
         age=person_db_record.data["age"],
@@ -56,17 +90,6 @@ class Query(ObjectType):
             country=person_db_record.data["address_one"]["country"],
             postalCode=person_db_record.data["address_one"]["postalCode"]
         ),
-        address_two=person_db_record.data["address_two"])
-        for person_db_record in persons_set
-        ]
-
-    def resolve_person(self, _, person_id):
-        person_db_record = PersonModel.objects.get(pk=person_id)
-        return PersonSchemaOutput(
-        id = person_db_record.id,
-        name= person_db_record.data["name"],
-        age=person_db_record.data["age"],
-        address_one=person_db_record.data["address_one"],
         address_two=person_db_record.data["address_two"],
         )
 
@@ -166,9 +189,26 @@ class UpdatePerson(Mutation):
             return UpdatePerson(person=person_instance, ok=True)
         return UpdatePerson(person=None, ok=False)
 
+
+class DeletePerson(Mutation):
+  class Arguments:
+    # The input arguments for this mutation
+    id = ID()
+
+  # The class attributes define the response of the mutation
+  person = Field(PersonSchemaOutput)
+
+  def mutate(self, info, id):
+    person = PersonModel.objects.get(pk=id)
+    if person is not None:
+      person.delete()
+    return DeletePerson(person=person)
+
 class Mutations(ObjectType):
     create_person = CreatePerson.Field()
     update_person = UpdatePerson.Field()
+    delete_person = DeletePerson.Field()
+
 
 
 schema = Schema(query=Query, mutation=Mutations)
