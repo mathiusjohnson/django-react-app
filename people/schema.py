@@ -3,7 +3,8 @@ import attr
 from graphene import Schema, Mutation, InputObjectType,ObjectType, String, Boolean, Field, Int, List, NonNull, ID
 from .models import PersonModel
 from .person import PersonDataClass
-from .address import AddressDataClass
+from .addressOne import AddressOneDataClass
+from .addressTwo import AddressTwoDataClass
 
 class AddressSchemaOutput(ObjectType):
     street = NonNull(String)
@@ -11,6 +12,13 @@ class AddressSchemaOutput(ObjectType):
     region = NonNull(String)
     country = NonNull(String)
     postalCode = NonNull(String)
+
+class AddressTwoSchemaOutput(ObjectType):
+    street = String()
+    city = String()
+    region = String()
+    country = String()
+    postalCode = String()
 
 class AddressTwoSchemaOutput(ObjectType):
     street = NonNull(String)
@@ -24,7 +32,7 @@ class PersonSchemaOutput(ObjectType):
     name = NonNull(String)
     age = NonNull(Int)
     address_one = NonNull(AddressSchemaOutput)
-    address_two = NonNull(AddressSchemaOutput)
+    address_two = NonNull(AddressTwoSchemaOutput)
 
 class AddressSchemaInputCreate(InputObjectType):
     street = NonNull(String)
@@ -33,11 +41,18 @@ class AddressSchemaInputCreate(InputObjectType):
     country = NonNull(String)
     postalCode = NonNull(String)
 
+class AddressTwoSchemaInputCreate(InputObjectType):
+    street = String()
+    city = String()
+    region = String()
+    country = String()
+    postalCode = String()
+
 class PersonSchemaInputCreate(InputObjectType):
     name = NonNull(String)
     age = NonNull(Int)
     address_one = NonNull(AddressSchemaInputCreate)
-    address_two = AddressSchemaInputCreate()
+    address_two = AddressTwoSchemaInputCreate()
 
 class PersonSchemaInputUpdate(InputObjectType):
 # lets say we only allow update of following
@@ -51,25 +66,25 @@ class Query(ObjectType):
   
     def resolve_all_persons(self, _, **kwargs):
         persons_set = PersonModel.objects.all()
-
+        
         return [
         PersonSchemaOutput(
         id = person_db_record.id,
         name = person_db_record.data["name"],
         age = person_db_record.data["age"],
         address_one = AddressSchemaOutput(
-            street=person_db_record.data["address_two"]["street"],
+            street=person_db_record.data["address_one"]["street"],
             city=person_db_record.data["address_one"]["city"],
             region=person_db_record.data["address_one"]["region"],
             country=person_db_record.data["address_one"]["country"],
             postalCode=person_db_record.data["address_one"]["postalCode"]
         ),
         address_two = AddressSchemaOutput(
-            street=person_db_record.data["address_two"]["street"],
-            city=person_db_record.data["address_two"]["city"],
-            region=person_db_record.data["address_two"]["region"],
-            country=person_db_record.data["address_two"]["country"],
-            postalCode=person_db_record.data["address_two"]["postalCode"]
+            street=person_db_record.data["address_two"]["street"] if isinstance(person_db_record.data["address_two"], dict) else "",
+            city=person_db_record.data["address_two"]["city"] if isinstance(person_db_record.data["address_two"], dict) else "",
+            region=person_db_record.data["address_two"]["region"] if isinstance(person_db_record.data["address_two"], dict) else "",
+            country=person_db_record.data["address_two"]["country"] if isinstance(person_db_record.data["address_two"], dict) else "",
+            postalCode=person_db_record.data["address_two"]["postalCode"] if isinstance(person_db_record.data["address_two"], dict) else ""
         )
         # address_two=person_db_record.data["address_two"]
         )
@@ -115,31 +130,43 @@ class CreatePerson(Mutation):
         dAddOneCountry = dataAddressOne.country
         dAddOnePostalCode = dataAddressOne.postalCode
 
-        dataAddressTwo = person_data.address_two
-        dAddTwoStreet = dataAddressTwo.street
-        dAddTwoCity = dataAddressTwo.city
-        dAddTwoRegion = dataAddressTwo.region
-        dAddTwoCountry = dataAddressTwo.country
-        dAddTwoPostalCode = dataAddressTwo.postalCode
-
-        person_data_class = PersonDataClass(
-            name=dataName, 
-            age=dataAge, 
-            address_one=AddressDataClass(
-                street=dAddOneStreet,
-                city=dAddOneCity,
-                region=dAddOneRegion,
-                country=dAddOneCountry,
-                postalCode=dAddOnePostalCode
-            ), 
-            address_two=AddressDataClass(
-                street=dAddTwoStreet,
-                city=dAddTwoCity,
-                region=dAddTwoRegion,
-                country=dAddTwoCountry,
-                postalCode=dAddTwoPostalCode          
+        if isinstance(person_data.address_two, dict):
+            dataAddressTwo = person_data.address_two
+            dAddTwoStreet = dataAddressTwo.street
+            dAddTwoCity = dataAddressTwo.city
+            dAddTwoRegion = dataAddressTwo.region
+            dAddTwoCountry = dataAddressTwo.country
+            dAddTwoPostalCode = dataAddressTwo.postalCode
+            person_data_class = PersonDataClass(
+                name=dataName, 
+                age=dataAge, 
+                address_one=AddressOneDataClass(
+                    street=dAddOneStreet,
+                    city=dAddOneCity,
+                    region=dAddOneRegion,
+                    country=dAddOneCountry,
+                    postalCode=dAddOnePostalCode
+                ), 
+                address_two=AddressTwoDataClass(
+                    street=dAddTwoStreet,
+                    city=dAddTwoCity,
+                    region=dAddTwoRegion,
+                    country=dAddTwoCountry,
+                    postalCode=dAddTwoPostalCode          
+                )
             )
-        )
+        else:
+            person_data_class = PersonDataClass(
+                name=dataName, 
+                age=dataAge, 
+                address_one=AddressOneDataClass(
+                    street=dAddOneStreet,
+                    city=dAddOneCity,
+                    region=dAddOneRegion,
+                    country=dAddOneCountry,
+                    postalCode=dAddOnePostalCode
+                ), 
+            )
         # now create json_data
         person_json_data = cattr.unstructure(person_data_class)
         # create entry in DB

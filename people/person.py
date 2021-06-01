@@ -35,6 +35,5 @@ class PersonDataClass:
 
     @name.validator
     def _check_name(self, _, value):
-        print(value)
         if len(value) < 1:
             raise ValueError("Name cannot be blank")

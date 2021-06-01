@@ -7,7 +7,7 @@ from attr.validators import (
 from typing import Optional
 
 @attrs
-class AddressDataClass:
+class AddressOneDataClass:
     street: Optional[str] = attrib(default=None, validator=optional(instance_of(str)))
     city: Optional[str] = attrib(default=None, validator=optional(instance_of(str)))
     region: Optional[str] = attrib(default=None, validator=optional(instance_of(str)))
@@ -15,6 +15,26 @@ class AddressDataClass:
     postalCode: Optional[str] = attrib(default=None, validator=optional(instance_of(str)))
 
     # https://stackoverflow.com/questions/11832400/validate-postal-code
+ 
+    @street.validator
+    def _check_street(self, _, value):
+        if len(value) < 1:
+            raise ValueError("Street cannot be blank")
+
+    @city.validator
+    def _check_city(self, _, value):
+        if len(value) < 1:
+            raise ValueError("City cannot be blank")
+
+    @region.validator
+    def _check_region(self, _, value):
+        if len(value) < 1:
+            raise ValueError("Region cannot be blank")
+    @country.validator
+    def _check_country(self, _, value):
+        if len(value) < 1:
+            raise ValueError("Country cannot be blank")
+
     @postalCode.validator
     def _check_postal(self, _, value):
       value = value.upper().replace(" ", "")
