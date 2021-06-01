@@ -10,8 +10,8 @@ from typing import Optional
 class PersonDataClass:
     name: Optional[str] = attrib(default=None, validator=optional(instance_of(str)))
     age: Optional[int] = attrib(default=None, validator=optional(instance_of(int)))
-    address_one: Optional[str] = attrib(default=None, validator=optional(instance_of(str)))
-    address_two: Optional[str] = attrib(default=None, validator=optional(instance_of(str)))
+    address_one: Optional[object] = attrib(default=None, validator=optional(instance_of(object)))
+    address_two: Optional[object] = attrib(default=None, validator=optional(instance_of(object)))
     @age.validator
     def _check_age(self, _, value):
         if value and value <=20:
