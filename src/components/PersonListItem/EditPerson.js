@@ -34,8 +34,7 @@ export default function EditPerson ({id, oldName, oldAge, onCancel, onSave, addr
   return (
     <main className="grid grid-cols-5 items-center m-2">
       <section className="col-span-4 grid grid-cols-4 ">
-        <form className="col-span-2 flex justify-between" autoComplete="off" onSubmit={(event) => event.preventDefault()}>
-          <div>
+        <form className="col-span-2 grid grid-cols-2" autoComplete="off" onSubmit={(event) => event.preventDefault()}>
             <input
               className="border-2 border-solid border-green-500 rounded text-center mx-2"
               name="name"
@@ -48,8 +47,6 @@ export default function EditPerson ({id, oldName, oldAge, onCancel, onSave, addr
               }}
               data-testid=""
             />
-          </div>
-          <div className="">{error}</div>
           <input
               className="border-2 border-solid border-green-500 rounded text-center mx-2"
               name="name"
