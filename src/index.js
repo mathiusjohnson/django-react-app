@@ -7,11 +7,14 @@ import { createClient, Provider } from 'urql';
 import { getToken } from './token';
 
 const client = createClient({
-  url: 'http://localhost:8000/graphql/',
+  url: 'http://127.0.0.1:8000/graphql/',
   fetchOptions: () => {
     const token = getToken();
     return {
-      headers: { authorization: token ? `Bearer ${token}` : '' },
+        mode: "cors",
+        credentials: 'same-origin',
+        contentType: 'application/json',
+        headers: { authorization: token ? `Bearer ${token}` : '' },
     };
   },
 });

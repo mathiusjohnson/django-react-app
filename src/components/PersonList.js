@@ -21,7 +21,6 @@ query{
       country
       postalCode
     }
-    # addressTwo
     addressTwo{
       street
       city

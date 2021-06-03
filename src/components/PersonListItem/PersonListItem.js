@@ -39,7 +39,7 @@ const PersonListItem = ({person, refresh}) => {
         transition(SAVING);
         updatePerson(variables)
             .then(result => {
-                console.log(result);
+                // console.log(result);
                 if (result.error) {
                     console.error('Oh no!', result.error);
                 } else {
@@ -53,8 +53,8 @@ const PersonListItem = ({person, refresh}) => {
             }) 
     }   
 
-    console.log(updatePersonResult);
-    console.log(personState, person);
+    // console.log(updatePersonResult);
+    // console.log(personState, person);
     if (!updatePersonResult.fetching) {
         return (
             <div>

@@ -82,7 +82,7 @@ export default function CreatePerson ({back}) {
   };
 
   function save(newName, newAge) {
-    console.log('save!!!');
+    // console.log('save!!!');
 
 
     const variables = { 
@@ -100,11 +100,11 @@ export default function CreatePerson ({back}) {
       postalCodeTwo: addressTwoPostal || ''   
     };
 
-    console.log(variables);
+    // console.log(variables);
     transition(SAVING);
     createPerson(variables)
         .then(result => {
-            console.log(result);
+            // console.log(result);
             if (result.error) {
                 console.error('Oh no!', result.error.message);
                 setError(result.error.message.replace("[GraphQL]", ""))

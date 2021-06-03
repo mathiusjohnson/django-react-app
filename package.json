@@ -9,12 +9,17 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/react-hooks": "^7.0.0",
     "@testing-library/user-event": "^12.1.10",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-15": "^1.4.3",
+    "enzyme-adapter-react-16": "^1.15.6",
     "graphql": "^15.5.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "react-test-renderer": "^17.0.2",
     "urql": "^2.0.3",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "wonka": "^4.0.15"
   },
   "scripts": {
     "start": "craco start",
@@ -41,6 +46,7 @@
     ]
   },
   "devDependencies": {
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.1",
     "autoprefixer": "^9.8.6",
     "postcss": "^7.0.35",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.2"

@@ -14,7 +14,7 @@ const ShowPerson = ({personState, addressOne, addressTwo, onEditClicked, refresh
     const [deletePersonResult, deletePerson] = useMutation(DELETE_PERSON_QUERY);
 
     const onDeleteClicked = () => {
-        console.log('delete clicked!!!');
+        // console.log('delete clicked!!!');
         const variables = { id: personState.id }
         deletePerson(variables)
             .then(result => {
