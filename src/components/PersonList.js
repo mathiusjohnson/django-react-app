@@ -51,8 +51,8 @@ export const People = () => {
 
   const renderedPersons = data.allPersons.map((person, index) => {
     return (
-      <li>
-        <PersonListItem refresh={refresh} key={index} person={person} />
+      <li key={index}>
+        <PersonListItem refresh={refresh} person={person} />
       </li>
     )
   })
