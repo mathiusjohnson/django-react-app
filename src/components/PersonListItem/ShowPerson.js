@@ -30,16 +30,17 @@ const ShowPerson = ({personState, addressOne, addressTwo, onEditClicked, refresh
         <div className="grid grid-cols-5 items-center m-2">
             <p>{personState.name}</p>
             <span>{personState.age}</span>
-            <ShowAddress address={addressOne} />
-            {addressTwo ? 
-            <ShowAddress address={addressTwo} />
-                : ""
-            }
+            <ShowAddress address={personState.addressOne} />
+            {/* {addressTwo ?  */}
+            <ShowAddress address={personState.addressTwo} />
+                {/* : "" */}
+            {/* } */}
             <div>
                 <div className="flex space-x-2">
-                    <Button onClick={() => onEditClicked()} variant="contained" color="default">
+                    <button onClick={() => onEditClicked()} variant="contained" color="default"
+                    className="edit">
                         Edit
-                    </Button>
+                    </button>
                     <Button onClick={() => onDeleteClicked()} variant="contained" color="secondary">
                         Delete
                     </Button>

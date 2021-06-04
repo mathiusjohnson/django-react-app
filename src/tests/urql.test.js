@@ -2,9 +2,12 @@ import { mount, configure } from 'enzyme';
 import { Provider } from 'urql';
 import { never, fromValue } from 'wonka';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+import { screen } from '@testing-library/dom'
 
 import { People } from '../components/PersonList';
 import CreatePerson from '../components/CreatePerson';
+import EditPerson from '../components/PersonListItem/EditPerson';
+// import EditPerson from '../components/PersonListItem/EditPerson';
 
 configure({ adapter: new Adapter() });
 
@@ -13,6 +16,11 @@ const mockClient = {
   executeMutation: jest.fn(() => never),
   executeSubscription: jest.fn(() => never),
 };
+
+// jest.mock('../components/PersonListItem/EditPerson', () => () => ({
+//     onSave:jest.fn(
+//     )
+// }))
 
 it('matches snapshot', () => {
     const responseState = {
@@ -71,7 +79,9 @@ it('matches snapshot', () => {
   expect(wrapper).toMatchSnapshot();
 });
 
-it('triggers a mutation', () => {
+it('triggers a create person mutation', () => {
+    const save = jest.fn();
+
     const wrapper = mount(
       <Provider value={mockClient}>
         <CreatePerson />
@@ -117,16 +127,121 @@ it('triggers a mutation', () => {
     wrapper.find('input[name="postalCodeTwo"]').simulate('change', {
         target: { value: variables.postalCodeTwo } });
     
-        const button = wrapper.findWhere(node => {
-            return (
-                node.type() &&
-                node.name() &&
-                node.text() === "Save"
-                )
-            })
-    // console.log(wrapper.debug())
+    const button = wrapper.findWhere(node => {
+        return (
+            node.type() &&
+            node.name() &&
+            node.text() === "Save"
+            )
+        })
+
     button.simulate('click');
     expect(mockClient.executeMutation).toBeCalledTimes(1);
     expect(mockClient.executeMutation).toBeCalledWith(expect.objectContaining({ variables }), {});
   });
 
+it('triggers an update person mutation', () => {
+    const onSave = jest.fn();
+
+    const responseState = {
+        executeQuery: () =>
+          fromValue({
+            data: {
+                allPersons: [
+                    {
+                      id: "10",
+                      name: "Joe Two",
+                      age: 22,
+                      addressOne: {
+                        street: "38030 loggers lane",
+                        city: "Squamish",
+                        region: "BC",
+                        country: "Canada",
+                        postalCode: "v8b0z9"
+                      },
+                      addressTwo: {
+                        street: "38030 loggers lane",
+                        city: "Squamish",
+                        region: "BC",
+                        country: "Canada",
+                        postalCode: "v8b0z9"
+                      }
+                    },
+                    {
+                        id: "10",
+                        name: "Joe Two",
+                        age: 22,
+                        addressOne: {
+                          street: "38030 loggers lane",
+                          city: "Squamish",
+                          region: "BC",
+                          country: "Canada",
+                          postalCode: "v8b0z9"
+                        },
+                        addressTwo: {
+                          street: "38030 loggers lane",
+                          city: "Squamish",
+                          region: "BC",
+                          country: "Canada",
+                          postalCode: "v8b0z9"
+                        }
+                      }
+                    ]
+                }
+          }),
+      };
+    
+    const personState = {
+        id: 1,
+        oldName: 'Mathius', 
+        oldAge: 25, 
+        addressOne: {
+            street: '1234', 
+            city: 'edd', 
+            region: 'ddd', 
+            country: 'can', 
+            postalCode: 'v8b0z9'
+        },
+        addressTwo: {
+            street: '1234', 
+            city: 'edd', 
+            region: 'ddd', 
+            country: 'can', 
+            postalCode: 'v8b0z9'
+        },     
+    }
+
+    const wrapper = mount(
+        <Provider value={responseState}>
+            <EditPerson 
+                personState={personState}
+            />
+        </Provider>
+    );
+
+    const variables = {
+        id: 1,
+        name: 'New Name',
+        age: 35
+    }
+    const nameInput = wrapper.find('input[name="name"]')
+    const ageInput = wrapper.find('input[name="age"]')
+
+    nameInput.simulate('change', {
+        target: { value: variables.name } });
+    ageInput.simulate('change', {
+        target: { value: variables.age } });
+
+
+    const button = wrapper.findWhere(node => {
+    return (
+        node.type() &&
+        node.name() &&
+        node.text() === "Save"
+        )
+    })
+    
+    button.simulate('click');
+    expect(mockClient.executeMutation).toBeCalledTimes(1);
+    expect(mockClient.executeMutation).toBeCalledWith(expect.objectContaining({ variables }), {});
+});

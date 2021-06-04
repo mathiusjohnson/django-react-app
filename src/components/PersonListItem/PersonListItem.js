@@ -53,8 +53,11 @@ const PersonListItem = ({person, refresh}) => {
             }) 
     }   
 
-    // console.log(updatePersonResult);
-    // console.log(personState, person);
+    // const addressOne = person.addressOne
+    // const addressTwo = person.addressTwo
+    // const oldAge = personState.age
+    // const oldName = personState.name
+
     if (!updatePersonResult.fetching) {
         return (
             <div>
@@ -67,8 +70,7 @@ const PersonListItem = ({person, refresh}) => {
                     <ShowPerson 
                         personState={personState} 
                         onEditClicked={onEditClicked} 
-                        addressOne={person.addressOne} 
-                        addressTwo={person.addressTwo}
+                        
                         refresh={refresh}
                     />
                 )}
@@ -78,10 +80,7 @@ const PersonListItem = ({person, refresh}) => {
                         id={person.id}
                         onCancel={back}
                         onSave={save}
-                        oldName={personState.name}
-                        oldAge={personState.age}
-                        addressOne={person.addressOne}
-                        addressTwo={person.addressTwo}
+                        personState={personState}
                     />
                 )}
             </div>

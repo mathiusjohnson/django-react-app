@@ -7,7 +7,7 @@ const SHOW = "SHOW";
 const SAVING = "SAVING";
 
 const CREATE_PERSON_QUERY = `
-mutation ($name: String!, $age: Int!, $streetOne: String!, $cityOne: String!, $regionOne: String!, $countryOne: String!, $postalCodeOne: String!, $streetTwo: String!, $cityTwo: String!, $regionTwo: String!, $countryTwo: String!, $postalCodeTwo: String!) {
+mutation ($name: String!, $age: Int!, $streetOne: String!, $cityOne: String!, $regionOne: String!, $countryOne: String!, $postalCodeOne: String!, $streetTwo: String, $cityTwo: String, $regionTwo: String, $countryTwo: String, $postalCodeTwo: String) {
     createPerson(personData: {
         name: $name, 
         age: $age, 
@@ -81,27 +81,26 @@ export default function CreatePerson ({back}) {
   };
 
   function save() {
-
+    console.log(addressTwoStreet);
     const variables = { 
       name: name || '', 
       age: age || '', 
-      streetOne: addressOneStreet || '',
+      streetOne: addressOneStreet,
       cityOne: addressOneCity || '',
       regionOne: addressOneRegion || '',
       countryOne: addressOneCountry || '',
       postalCodeOne: addressOnePostal || '',
-      streetTwo: addressTwoStreet || '',
-      cityTwo: addressTwoCity || '',
-      regionTwo: addressTwoRegion || '',
-      countryTwo: addressTwoCountry || '',
-      postalCodeTwo: addressTwoPostal || ''   
+      streetTwo: addressTwoStreet !== undefined ? addressTwoStreet :  null,
+      cityTwo: addressTwoCity !== undefined ? addressTwoCity :  null,
+      regionTwo: addressTwoRegion !== undefined ? addressTwoRegion :  null,
+      countryTwo: addressTwoCountry !== undefined ? addressTwoCountry :  null,
+      postalCodeTwo: addressTwoPostal !== undefined ? addressTwoPostal :  null   
     };
 
-    console.log(variables);
     transition(SAVING);
     createPerson(variables)
         .then(result => {
-            console.log('result: ', result);
+            // console.log('result: ', result);
             if (result.error) {
                 console.error('Oh no!', result.error.message);
                 setError(result.error.message.replace("[GraphQL]", ""))
