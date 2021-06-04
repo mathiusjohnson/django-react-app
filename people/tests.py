@@ -60,8 +60,8 @@ create_person_mutation = """
 """
  
 update_person_mutation = """
-     mutation UpdatePerson($input: PersonSchemaInputUpdate!) {
-        updatePerson(personData: $input) {
+     mutation UpdatePerson($personData: PersonSchemaInputUpdate!) {
+        updatePerson(personData: $personData) {
             person {
                 id
                 name
@@ -78,6 +78,7 @@ delete_person_mutation = """
         }
     }
 """
+
 
 
 @pytest.mark.django_db
@@ -142,8 +143,9 @@ class TestPersonSchema(GraphQLTestCase):
             "id": personId,
             "name": "Justin"
         }
- 
-        response = client.execute(update_person_mutation, variables={"input": payload})
+
+        print(payload)
+        response = client.execute(update_person_mutation, variables={"personData": payload})
         print('response', response)
         response_person = response.get("data")
         name = response_person.get("name")
