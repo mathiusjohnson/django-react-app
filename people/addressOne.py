@@ -18,38 +18,39 @@ class AddressOneDataClass:
  
     @street.validator
     def _check_street(self, _, value):
-        if len(value) < 1:
+        if value and len(value) < 1:
             raise ValueError("Street cannot be blank")
 
     @city.validator
     def _check_city(self, _, value):
-        if len(value) < 1:
+        if value and len(value) < 1:
             raise ValueError("City cannot be blank")
 
     @region.validator
     def _check_region(self, _, value):
-        if len(value) < 1:
+        if value and len(value) < 1:
             raise ValueError("Region cannot be blank")
     @country.validator
     def _check_country(self, _, value):
-        if len(value) < 1:
+        if value and len(value) < 1:
             raise ValueError("Country cannot be blank")
 
     @postalCode.validator
     def _check_postal(self, _, value):
-      value = value.upper().replace(" ", "")
-      if len(value) == 6:
-          for i in range(len(value)):
-              if i % 2 == 0:
-                  #Even index (0, 2, 4, 6...) , havalue to be 'letter'
-                  if not(value[i].isalpha()):
-                      raise ValueError("Please enter a valid postal code")
-              else:
-                  #Odd index (1, 3, 5, 7...), must be 'number'
-                  if not(value[i].isdigit()):
-                      raise ValueError("Please enter a valid postal code")
+        if value:
+            value = value.upper().replace(" ", "")
+        if value and len(value) == 6:
+            for i in range(len(value)):
+                if i % 2 == 0:
+                    #Even index (0, 2, 4, 6...) , havalue to be 'letter'
+                    if not(value[i].isalpha()):
+                        raise ValueError("Please enter a valid postal code")
+                else:
+                    #Odd index (1, 3, 5, 7...), must be 'number'
+                    if not(value[i].isdigit()):
+                        raise ValueError("Please enter a valid postal code")
 
 
-      else:
+        else:
           #You can save some cpu ticks here... at this point, the string has to be of length 6 or you know it's not a zip
-        raise ValueError("Please enter a valid postal code")
+            raise ValueError("Please enter a valid postal code")

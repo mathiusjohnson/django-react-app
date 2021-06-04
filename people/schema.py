@@ -5,7 +5,6 @@ from graphene import Schema, Mutation, InputObjectType,ObjectType, String, Boole
 from .models import PersonModel
 from .person import PersonDataClass
 from .addressOne import AddressOneDataClass
-from .addressTwo import AddressTwoDataClass
 
 class AddressSchemaOutput(ObjectType):
     street = String()
@@ -60,11 +59,11 @@ class Query(ObjectType):
             postalCode=person_db_record.data["address_one"]["postalCode"]
         ),
         address_two = AddressSchemaOutput(
-            street=person_db_record.data["address_two"]["street"] if isinstance(person_db_record.data["address_two"], dict) else "",
-            city=person_db_record.data["address_two"]["city"] if isinstance(person_db_record.data["address_two"], dict) else "",
-            region=person_db_record.data["address_two"]["region"] if isinstance(person_db_record.data["address_two"], dict) else "",
-            country=person_db_record.data["address_two"]["country"] if isinstance(person_db_record.data["address_two"], dict) else "",
-            postalCode=person_db_record.data["address_two"]["postalCode"] if isinstance(person_db_record.data["address_two"], dict) else ""
+            street=person_db_record.data["address_two"]["street"] if isinstance(person_db_record.data["address_two"], dict) else None,
+            city=person_db_record.data["address_two"]["city"] if isinstance(person_db_record.data["address_two"], dict) else None,
+            region=person_db_record.data["address_two"]["region"] if isinstance(person_db_record.data["address_two"], dict) else None,
+            country=person_db_record.data["address_two"]["country"] if isinstance(person_db_record.data["address_two"], dict) else None,
+            postalCode=person_db_record.data["address_two"]["postalCode"] if isinstance(person_db_record.data["address_two"], dict) else None
         ) 
         )
 
@@ -109,9 +108,10 @@ class CreatePerson(Mutation):
         dAddOneCountry = dataAddressOne.country
         dAddOnePostalCode = dataAddressOne.postalCode
         print(person_data)
-        if isinstance(person_data.address_two, dict):
+
+        dataAddressTwo = person_data.address_two
+        if dataAddressTwo and dataAddressTwo.street and dataAddressTwo.city and dataAddressTwo.region and dataAddressTwo.country and dataAddressTwo.postalCode:
             print('address two checks out')
-            dataAddressTwo = person_data.address_two
             dAddTwoStreet = dataAddressTwo.street
             dAddTwoCity = dataAddressTwo.city
             dAddTwoRegion = dataAddressTwo.region
@@ -127,7 +127,7 @@ class CreatePerson(Mutation):
                     country=dAddOneCountry,
                     postalCode=dAddOnePostalCode
                 ), 
-                address_two=AddressTwoDataClass(
+                address_two=AddressOneDataClass(
                     street=dAddTwoStreet,
                     city=dAddTwoCity,
                     region=dAddTwoRegion,
