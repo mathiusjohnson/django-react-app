@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useVisualMode from '../../hooks/useVisualMode'
+import useVisualMode from '../../../hooks/useVisualMode'
 import { useMutation } from 'urql';
 import Status from "./Status";
 import EditPerson from './EditPerson';

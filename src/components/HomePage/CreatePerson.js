@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from '@material-ui/core/Button';
 import { useMutation } from 'urql';
-import useVisualMode from '../hooks/useVisualMode'
+import useVisualMode from '../../hooks/useVisualMode'
 
 const SHOW = "SHOW";
 const SAVING = "SAVING";
@@ -82,7 +82,7 @@ export default function CreatePerson ({back}) {
   };
 
   function save() {
-    console.log(addressTwoStreet);
+    // console.log(addressTwoStreet);
     const variables = { 
       name: name || '', 
       age: age || '', 

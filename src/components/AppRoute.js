@@ -3,7 +3,6 @@ import { Redirect, Route } from 'react-router-dom';
 
 
 const AppRoutes = ({ component: Component, path, isPrivate, props, state, createService, deleteService, ...rest }) => {
-	console.log(path);
 	return (
 		<Route
 			exact path={path}

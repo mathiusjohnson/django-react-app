@@ -1,5 +1,5 @@
 export {
-    Context as UsersContext,
-    Provider as UsersContextProvider,
-  } from "./UsersContext";
+    Context as LocationContext,
+    Provider as LocationContextProvider,
+  } from "./LocationContext";
   

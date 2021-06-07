@@ -1,12 +1,12 @@
 import React from 'react';
-import { People } from '../components/PersonList';
-import Header from '../components/Header';
+import HomePage from '../components/HomePage/index';
+import Header from '../components/HomePage/Header';
 
 const Home = () => {
     return (
         <div>
             <Header />
-            <People />
+            <HomePage />
         </div>
     );
 };
