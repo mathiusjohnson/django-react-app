@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import AppRoute from './components/AppRoute';
 import routes from './Config/routes.js';
-import { LocationContextProvider, UserContextProvider } from "./context";
+import { LocationContextProvider } from "./context";
 import './styles/App.css';
 import Navigation from './components/Navigation/index';
 import { AuthProvider } from "./context/UserContext";
@@ -10,11 +10,10 @@ function App() {
     
   return (
     <div className="App">
-        <AuthProvider>
 
-            <Router>
-                <LocationContextProvider>
-                    <UserContextProvider>
+        <Router>
+            <LocationContextProvider>
+                <AuthProvider>
 
                     <Navigation />
                     <Switch>
@@ -33,11 +32,10 @@ function App() {
                             />
                         ))}
                     </Switch>
-                    </UserContextProvider>
 
-                </LocationContextProvider>
-            </Router>
-        </AuthProvider>
+                </AuthProvider>     
+            </LocationContextProvider>
+        </Router>
     </div>
   );
 }

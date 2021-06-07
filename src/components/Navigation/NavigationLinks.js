@@ -5,7 +5,7 @@ import { LocationContext } from '../../context/index';
 import { loginUser, logout, useAuthState, useAuthDispatch } from '../../context/UserContext/index' 
 
 const NavigationLinks = () => {
-    const { currentLocation } = useContext(LocationContext);
+    const { currentLocation, editButtonText, setEditButtonText } = useContext(LocationContext);
     // const { currentUser } = useContext(LocationContext);
     const dispatch = useAuthDispatch() //get the dispatch method from the useDispatch custom hook
     const userDetails = useAuthState() //read user details from context
@@ -23,8 +23,6 @@ const NavigationLinks = () => {
         let payload = {name: "joe", email: "joe@test.ca", isAdmin: true}
         try {
             let response = await loginUser(dispatch, payload) //loginUser action makes the request and handles all the neccessary state changes
-            if (!response.user) return
-            // props.history.push('/dashboard') //navigate to dashboard on success
         } catch (error) {
             console.error(error)
         }

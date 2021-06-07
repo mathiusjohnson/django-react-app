@@ -9,10 +9,13 @@ export const Context = createContext();
 export const Provider = ({children}) => {
     // Initial values are obtained from the props
     const history = useHistory() 
-    const [currentLocation, setCurrentLocation] = useState(history.location.pathname);
+    const path = history.location.pathname
+    const [currentLocation, setCurrentLocation] = useState(path);
+    const [editButtonText, setEditButtonText] = useState(`Edit from ${path.replace('/', '')}`)
 
     useEffect(() => {
         return history.listen((location) => { 
+            setEditButtonText(`Edit from ${location.pathname.replace('/', '')}`)
             setCurrentLocation(location.pathname)
         }) 
      },[history])
@@ -20,7 +23,9 @@ export const Provider = ({children}) => {
 
     // Make the context object;
     const locationContext = {
-        currentLocation
+        currentLocation,
+        editButtonText,
+        setEditButtonText
     };
 
   // pass the value in provider and return
