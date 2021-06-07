@@ -35,7 +35,7 @@ const NavigationLinks = () => {
     const isLoggedIn = userDetails.email.length !== 0 ? true : false
     return (
            
-      <div className={`text-white text-2xl p-6 hidden sm:flex items-start justify-start z-50 mt-3`}>
+      <div className={`text-white text-2xl p-6 items-start justify-start z-50 mt-3`}>
         <div className="flex flex-wrap space-x-4 z-50">
 
           {/* NAVIGATION LINKS */}
