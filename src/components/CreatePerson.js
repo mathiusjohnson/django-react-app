@@ -18,6 +18,7 @@ mutation ($name: String!, $age: Int!, $streetOne: String!, $cityOne: String!, $r
             country: $countryOne, 
             postalCode: $postalCodeOne
         }, 
+
         addressTwo: {
             street: $streetTwo, 
             city: $cityTwo, 
