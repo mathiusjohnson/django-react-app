@@ -11,13 +11,12 @@ mutation($id: ID!) {
    }
 }
 `
-const ShowPerson = ({personState, addressOne, addressTwo, onEditClicked, refresh}) => {
+const ShowPerson = ({personState, onEditClicked, refresh}) => {
     const { currentLocation } = useContext(LocationContext);
 
     const [deletePersonResult, deletePerson] = useMutation(DELETE_PERSON_QUERY);
 
     const onDeleteClicked = () => {
-        // console.log('delete clicked!!!');
         const variables = { id: personState.id }
         deletePerson(variables)
             .then(result => {
@@ -30,7 +29,7 @@ const ShowPerson = ({personState, addressOne, addressTwo, onEditClicked, refresh
     }
 
     const editButtonText = currentLocation === '/home' ? 'Edit from Home' : currentLocation === '/about' ? 'Edit from about' : 'Edit from Contact'
-
+    
     return (
         <div className="grid grid-cols-5 items-center m-2">
             <p>{personState.name}</p>

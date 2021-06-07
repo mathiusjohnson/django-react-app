@@ -39,7 +39,6 @@ const PersonListItem = ({person, refresh}) => {
         transition(SAVING);
         updatePerson(variables)
             .then(result => {
-                // console.log(result);
                 if (result.error) {
                     console.error('Oh no!', result.error);
                 } else {

@@ -1,6 +1,7 @@
 import AboutPage from '../pages/About'
 import ContactPage from '../pages/Contact'
 import HomePage from '../pages/Home.js'
+import PrivatePage from '../pages/Private'
 // import Login from '../components/session/Login';
 
 const routes = [
@@ -17,6 +18,11 @@ const routes = [
   {
     path: '/contact',
     component: ContactPage,
+    isPrivate: false,
+  },
+  {
+    path: '/private',
+    component: PrivatePage,
     isPrivate: false,
   },
 //   {

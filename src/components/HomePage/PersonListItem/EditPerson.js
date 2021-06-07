@@ -79,6 +79,7 @@ export default function EditPerson ({personState, onCancel, onSave}) {
                 Save
             </button>
         </section>
+        <div>{error}</div>
         </main>
     );
 }

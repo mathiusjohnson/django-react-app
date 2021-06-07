@@ -50,7 +50,6 @@ export default function DropDown({ dropDownPosition }) {
     setAnchorEl(null);
   };
 
-  console.log(dropDownPosition);
   return (
     <div className={`flex justify-center items-${dropDownPosition} ml-4 md:mt-12 sm:hidden`}>
       <div>

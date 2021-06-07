@@ -82,7 +82,6 @@ export default function CreatePerson ({back}) {
   };
 
   function save() {
-    // console.log(addressTwoStreet);
     const variables = { 
       name: name || '', 
       age: age || '', 
@@ -101,7 +100,6 @@ export default function CreatePerson ({back}) {
     transition(SAVING);
     createPerson(variables)
         .then(result => {
-            // console.log('result: ', result);
             if (result.error) {
                 console.error('Oh no!', result.error.message);
                 setError(result.error.message.replace("[GraphQL]", ""))
@@ -113,7 +111,7 @@ export default function CreatePerson ({back}) {
         })
         .then(() => transition(SHOW))
         .catch((error) => {
-            console.log('error: ', error);
+            console.error('error: ', error);
         }) 
   }
 

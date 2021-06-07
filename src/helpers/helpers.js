@@ -27,7 +27,6 @@ export function SendUpdatePerson(newName, newAge, personId, transition, updatePe
     transition(SAVING);
     updatePerson(variables)
         .then(result => {
-            // console.log(result);
             if (result.error) {
                 console.error('Oh no!', result.error);
             } else {

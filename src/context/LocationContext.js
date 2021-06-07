@@ -9,13 +9,11 @@ export const Context = createContext();
 export const Provider = ({children}) => {
     // Initial values are obtained from the props
     const history = useHistory() 
-    console.log(history.location);
     const [currentLocation, setCurrentLocation] = useState(history.location.pathname);
 
     useEffect(() => {
         return history.listen((location) => { 
             setCurrentLocation(location.pathname)
-            console.log(`You changed the page to: ${location.pathname}`) 
         }) 
      },[history])
      
