@@ -6,7 +6,6 @@ export async function loginUser(dispatch, loginPayload) {
 	// 	// headers: { 'Content-Type': 'application/json' },
 	// 	body: JSON.stringify(loginPayload),
 	// };
-    // console.log(loginPayload);
 	try {
 		dispatch({ type: 'REQUEST_LOGIN' });
 		// let response = loginPayload;

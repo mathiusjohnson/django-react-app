@@ -15,7 +15,6 @@ export const initialState = {
 export const AuthReducer = (initialState, action) => {
 	switch (action.type) {
 		case 'REQUEST_LOGIN':
-            console.log(action);
 			return {
 				...initialState,
 				loading: true,

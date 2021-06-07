@@ -20,9 +20,7 @@ const client = createClient({
 });
 
 ReactDOM.render(
-  <Provider value={client}>
-    <App />
-  </Provider>,
+    <App />,
   document.getElementById('root')
 );
 

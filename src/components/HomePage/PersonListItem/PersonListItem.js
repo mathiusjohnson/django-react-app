@@ -52,11 +52,6 @@ const PersonListItem = ({person, refresh}) => {
             }) 
     }   
 
-    // const addressOne = person.addressOne
-    // const addressTwo = person.addressTwo
-    // const oldAge = personState.age
-    // const oldName = personState.name
-
     if (!updatePersonResult.fetching) {
         return (
             <div>

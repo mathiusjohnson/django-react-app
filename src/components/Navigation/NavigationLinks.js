@@ -32,9 +32,7 @@ const NavigationLinks = () => {
         logout(dispatch) //call the logout action
     }
 
-    console.log(userDetails.email);
     const isLoggedIn = userDetails.email.length !== 0 ? true : false
-    console.log(isLoggedIn, userDetails.isAdmin);
     return (
            
       <div className={`text-white text-2xl p-6 hidden sm:flex items-start justify-start z-50 mt-3`}>

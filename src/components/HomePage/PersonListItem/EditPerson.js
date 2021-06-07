@@ -58,7 +58,7 @@ export default function EditPerson ({personState, onCancel, onSave}) {
                 className={`border-2 border-solid border-${ageBorder}-500 rounded text-center mx-2`}
                 name="age"
                 type="number"
-                placeholder="Enter age"
+                placeholder="Enter Age"
                 value={age || "" }
                 data-testid="person-age-input"
                 onChange={(event) => {

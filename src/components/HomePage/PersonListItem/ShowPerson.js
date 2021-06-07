@@ -32,7 +32,6 @@ const ShowPerson = ({personState, onEditClicked, refresh}) => {
     }
 
     const isLoggedIn = userDetails.email.length > 0 ? true : false
-    console.log(editButtonText);
     const isLoggedInEditButtonText = isLoggedIn ? editButtonText + ' Logged In' : editButtonText
 
     return (
