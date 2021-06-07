@@ -15,7 +15,6 @@ import {
 } from "@testing-library/react";
 
 import EditPerson from "../HomePage/PersonListItem/EditPerson";
-import PersonListItem from "../HomePage/PersonListItem/PersonListItem";
 
 afterEach(cleanup);
 
@@ -101,33 +100,19 @@ describe("Edit Person", () => {
 
     })
 
-//   it("finds the name and age input and changes them", () => {
-//     const { getByPlaceholderText } = render(
-//       <EditPerson personState={personState} />
-//     );
 
-//     fireEvent.change(getByPlaceholderText("Enter Name"), {
-//         target: {
-//             input: {
-//                 value: "Joe"
-//             }
-//         }
-//     })
+  it("validates that the name is not blank", () => {
+    const { nameInput, ageInput, saveButton, ...utils } = setup()
 
-//     expect(getByPlaceholderText("Enter Name")).toHaveValue("Joe");
-//   });
+    fireEvent.change(nameInput, {
+        target: { value: "" },
+        });    
 
-//   it("validates that the student name is not blank", () => {
-//     const onSave = jest.fn();
-//     const { getByText } = render(
-//       <Form personState={personState} onSave={onSave} />
-//     );
+    fireEvent.click(saveButton);
 
-//     fireEvent.click(getByText("Save"));
-
-//     expect(getByText(/student name cannot be blank/i)).toBeInTheDocument();
-//     expect(onSave).not.toHaveBeenCalled();
-//   });
+    // expect(utils.getByText(/Name cannot be blank/i)).toBeInTheDocument();
+    expect(onSave).not.toHaveBeenCalled();
+  });
 
 //   it("can successfully save after trying to submit an empty student name", () => {
 //     const onSave = jest.fn();

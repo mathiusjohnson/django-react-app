@@ -142,7 +142,7 @@ export default function CreatePerson ({back}) {
                     className={`border-2 border-solid border-${ageBorder}-500 rounded text-center mx-2`}
                     name="age"
                     type="number"
-                    placeholder="Enter age"
+                    placeholder="Enter Age"
                     value={age || "" }
                     onChange={(event) => {
                     setAge(event.target.value) 
@@ -240,7 +240,7 @@ export default function CreatePerson ({back}) {
                         className={`border-2 border-solid border-${addressBorder}-500 rounded text-center m-1`}
                         name="streetTwo"
                         type="text"
-                        placeholder="Enter Street"
+                        placeholder="Enter Street Two"
                         value={addressTwoStreet || "" }
                         onChange={(event) => {
                             setAddressTwoStreet(event.target.value) 
@@ -255,7 +255,7 @@ export default function CreatePerson ({back}) {
                         className={`border-2 border-solid border-${addressBorder}-500 rounded text-center m-1`}
                         name="cityTwo"
                         type="text"
-                        placeholder="Enter City"
+                        placeholder="Enter City Two"
                         value={addressTwoCity || "" }
                         onChange={(event) => {
                             setAddressTwoCity(event.target.value) 
@@ -270,7 +270,7 @@ export default function CreatePerson ({back}) {
                         className={`border-2 border-solid border-${addressBorder}-500 rounded text-center m-1`}
                         name="regionTwo"
                         type="text"
-                        placeholder="Enter Region"
+                        placeholder="Enter Region Two"
                         value={addressTwoRegion || "" }
                         onChange={(event) => {
                             setAddressTwoRegion(event.target.value) 
@@ -285,7 +285,7 @@ export default function CreatePerson ({back}) {
                         className={`border-2 border-solid border-${addressBorder}-500 rounded text-center m-1`}
                         name="countryTwo"
                         type="text"
-                        placeholder="Enter Country"
+                        placeholder="Enter Country Two"
                         value={addressTwoCountry || "" }
                         onChange={(event) => {
                             setAddressTwoCountry(event.target.value) 
@@ -300,7 +300,7 @@ export default function CreatePerson ({back}) {
                         className={`border-2 border-solid border-${addressBorder}-500 rounded text-center m-1`}
                         name="postalCodeTwo"
                         type="text"
-                        placeholder="Enter Postal Code"
+                        placeholder="Enter Postal Code Two"
                         value={addressTwoPostal || "" }
                         onChange={(event) => {
                             setAddressTwoPostal(event.target.value) 
@@ -318,6 +318,7 @@ export default function CreatePerson ({back}) {
                     </Button>
                     <button 
                         id="savebutton"
+                        data-testid="save"
                         onClick={() => save()} confirm="true" color="primary">
                         Save
                     </button>
