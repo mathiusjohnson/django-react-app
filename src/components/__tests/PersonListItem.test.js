@@ -13,14 +13,14 @@ const providerProps = {
 
 const customRender = (ui, { providerProps, ...renderOptions }) => {
     return render(
-    <Router>
-        <LocationContextProvider value={providerProps}>
-            <AuthProvider>
-                {ui}
-            </AuthProvider>
-        </LocationContextProvider>,
-        renderOptions
-      </Router>
+        <Router>
+            <LocationContextProvider value={providerProps}>
+                <AuthProvider>
+                    {ui}
+                </AuthProvider>
+            </LocationContextProvider>,
+            
+        </Router>
     );
 };
 

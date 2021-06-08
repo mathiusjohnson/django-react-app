@@ -1,34 +1,117 @@
 import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import { mount, configure } from 'enzyme';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 
-import { render } from "@testing-library/react";
+import { Provider } from 'urql';
+import { never, fromValue } from 'wonka';
+import { LocationContextProvider } from "../../context";
+import { AuthProvider } from "../../context/UserContext";
+import { cleanup, fireEvent, render, waitFor } from "@testing-library/react";
 
 import { People } from "../HomePage/PersonList";
+
+import { act } from "react-dom/test-utils";
+
+afterEach(cleanup);
+
+configure({ adapter: new Adapter() });
+
+
+const providerProps = {
+    currentLocation: '/home',
+    setCurrentLocation: (value) => {},
+}
+
+
+
+export const queryResponseState = {
+    executeQuery: () =>
+      fromValue({
+        data: {
+            allPersons: [
+                {
+                  id: "10",
+                  name: "Joe Two",
+                  age: 22,
+                  addressOne: {
+                    street: "38030 loggers lane",
+                    city: "Squamish",
+                    region: "BC",
+                    country: "Canada",
+                    postalCode: "v8b0z9"
+                  },
+                  addressTwo: {
+                    street: "38030 loggers lane",
+                    city: "Squamish",
+                    region: "BC",
+                    country: "Canada",
+                    postalCode: "v8b0z9"
+                  }
+                },
+                {
+                    id: "10",
+                    name: "Joe Two",
+                    age: 22,
+                    addressOne: {
+                      street: "38030 loggers lane",
+                      city: "Squamish",
+                      region: "BC",
+                      country: "Canada",
+                      postalCode: "v8b0z9"
+                    },
+                    addressTwo: {
+                      street: "38030 loggers lane",
+                      city: "Squamish",
+                      region: "BC",
+                      country: "Canada",
+                      postalCode: "v8b0z9"
+                    }
+                  }
+                ]
+            }
+    }),
+    executeMutation: jest.fn(() => never),
+    executeSubscription: jest.fn(() => never)
+  };
 
 describe("PersonList", () => {
     it("renders without crashing", () => {
       render(<People />);
     });
 
-//     it("loads data and edits a person", async () => {
-//         const { container, debug, getByDisplayValue } = render(<People />);
-    
+    it("transitions to create on clicking Add Person", async() => {
+        let payload = {name: "joe", email: "joe@test.ca", isAdmin: true}
+        await act(async() => {
+            const wrapper = render(
+            <Provider value={queryResponseState}>
+                <Router>
+                    <LocationContextProvider value={providerProps}>
+                        <AuthProvider value={payload}>
+                            <People />
+                        </AuthProvider>
+                    </LocationContextProvider>
+                </Router>
+            </Provider>
+            )
+            
+            // const AddButton = wrapper.findWhere(node => {
+            //     return node.type() === 'button' && node.text() === "Add New Person";
+            //   });
+            const AddButton = wrapper.getByText("Add New Person")
+            
+            fireEvent.click(AddButton)
 
-//         await waitForElement(() => getByText(container, "Archie Cohen"));
+            // AddButton.simulate('click')
+            // const nameInput = wrapper.find('input[name="personName"]')
+            await waitFor(() => {
+                wrapper.getAllByPlaceholderText('Enter Name')[0]
+            })
+            const nameInput = wrapper.getAllByPlaceholderText('Enter Name')[0]
 
-//         const appointment = getAllByTestId(
-//           container,
-//           "appointment"
-//         ).find((appointment) => queryByText(appointment, "Archie Cohen"));
-    
-//         fireEvent.click(getByAltText(appointment, "Edit"));
-//         // expect(getByText(appointment, "Cancel")).toBeInTheDocument();
-    
-//         expect(getByText(appointment, "Save")).toBeInTheDocument();
-    
-//         fireEvent.change(getByDisplayValue("Archie Cohen"), {
-//           target: { value: "Lydia Miller-Jones" },
-//         });
-    
-//   });
+            // console.log(AddButton);
+            expect(nameInput).toHaveValue("")
+        })
+    })
 })
 

@@ -17,6 +17,20 @@ mutation ($id: ID!, $name: String!, $age: Int!) {
         person {
             name
             age
+            addressOne {
+                street
+                city
+                region
+                country
+                postalCode
+            }
+            addressTwo {
+                street
+                city
+                region
+                country
+                postalCode
+            }
         }
     }
 }

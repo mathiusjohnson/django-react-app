@@ -72,9 +72,9 @@ export const People = () => {
 
       {mode === 'SHOW' && (
         <div className="my-4">
-          <Button onClick={() => onCreateClicked()} variant="contained" color="primary">
+          <button type="button" onClick={() => onCreateClicked()} variant="contained" color="primary">
             Add New Person
-          </Button>
+          </button>
         </div>
       )}
 

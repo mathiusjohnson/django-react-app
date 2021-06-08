@@ -25,33 +25,33 @@ function App() {
     
   return (
     <div className="App">
-  <Provider value={client}>
+        <Provider value={client}>
 
-        <Router>
-            <LocationContextProvider>
-                <AuthProvider>
+            <Router>
+                <LocationContextProvider>
+                    <AuthProvider>
 
-                    <Navigation />
-                    <Switch>
-                        <Route exact path = '/'
-                            render={() => {
-                            return (
-                                <Redirect to ="/home"/>
-                            )
-                            }} />
-                        {routes.map((route) => (
-                            <AppRoute
-                            key={route.path}
-                            path={route.path}
-                            component={route.component}
-                            isPrivate={route.isPrivate}
-                            />
-                        ))}
-                    </Switch>
+                        <Navigation />
+                        <Switch>
+                            <Route exact path = '/'
+                                render={() => {
+                                return (
+                                    <Redirect to ="/home"/>
+                                )
+                                }} />
+                            {routes.map((route) => (
+                                <AppRoute
+                                key={route.path}
+                                path={route.path}
+                                component={route.component}
+                                isPrivate={route.isPrivate}
+                                />
+                            ))}
+                        </Switch>
 
-                </AuthProvider>     
-            </LocationContextProvider>
-        </Router>
+                    </AuthProvider>     
+                </LocationContextProvider>
+            </Router>
         </Provider>
 
     </div>

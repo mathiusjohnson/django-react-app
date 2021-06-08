@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import Private from '../Private/index';
+import Private from '../../pages/Private';
 import { BrowserRouter as Router } from "react-router-dom";
 import { LocationContextProvider } from "../../context";
 import { AuthProvider } from "../../context/UserContext";
