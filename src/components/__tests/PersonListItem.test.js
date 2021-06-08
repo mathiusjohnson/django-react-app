@@ -1,12 +1,15 @@
-import { fireEvent, prettyDOM, render, cleanup } from '@testing-library/react';
-import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
+import { fireEvent, render, cleanup } from '@testing-library/react';
+import { BrowserRouter as Router } from "react-router-dom";
 import PersonListItem from '../HomePage/PersonListItem/index';
 import { LocationContextProvider } from "../../context";
 import { AuthProvider } from "../../context/UserContext";
-import { shallow } from 'enzyme';
 
 afterEach(cleanup);
 
+const providerProps = {
+    currentLocation: '/home',
+    setCurrentLocation: (value) => {},
+}
 
 const customRender = (ui, { providerProps, ...renderOptions }) => {
     return render(
@@ -20,11 +23,6 @@ const customRender = (ui, { providerProps, ...renderOptions }) => {
       </Router>
     );
 };
-  
-const providerProps = {
-    currentLocation: '/home',
-    setCurrentLocation: (value) => {},
-}
 
 const personState = {
     id: 1,

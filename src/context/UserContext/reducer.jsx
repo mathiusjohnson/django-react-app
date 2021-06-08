@@ -44,7 +44,9 @@ export const AuthReducer = (initialState, action) => {
 				errorMessage: action.error,
 			};
 
-		default:
-			throw new Error(`Unhandled action type: ${action.type}`);
+        default:
+            throw new Error(
+                `Tried to reduce with unsupported action type: ${action.type}`
+            );
 	}
 };
