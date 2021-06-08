@@ -45,10 +45,10 @@ const ShowPerson = ({personState, onEditClicked, refresh}) => {
             {/* } */}
             <div>
                 <div className="flex space-x-2">
-                    <Button onClick={() => onEditClicked()} variant="contained" color="default"
+                    <button onClick={() => onEditClicked()} variant="contained" color="default"
                     className="edit">
                         {isLoggedInEditButtonText}
-                    </Button>
+                    </button>
                     <Button onClick={() => onDeleteClicked()} variant="contained" color="secondary">
                         Delete
                     </Button>
