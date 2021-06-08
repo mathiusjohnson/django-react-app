@@ -3,15 +3,8 @@ import React from "react";
 
 import {
   fireEvent,
-  getByAltText,
-  getAllByTestId,
-  getByText,
-  getByDisplayValue,
-  getByPlaceholderText,
   render,
   cleanup,
-  waitFor,
-  getByTestId,
 } from "@testing-library/react";
 
 import EditPerson from "../HomePage/PersonListItem/EditPerson";
@@ -40,22 +33,27 @@ const personState = {
 }
 
 const onSave = jest.fn()
+const onCancel = jest.fn()
 
 const setup = () => {
+
     const utils = render(
         <EditPerson 
             personState={personState} 
             onSave={onSave}
+            onCancel={onCancel}
         />
     )
-    const nameInput = utils.getByPlaceholderText('Enter Name')
-    const ageInput = utils.getByPlaceholderText('Enter Age')
-    const saveButton = utils.getByText('Save');
+    const nameInput = utils.getAllByPlaceholderText('Enter Name')[0]
+    const ageInput = utils.getAllByPlaceholderText('Enter Age')[0]
+    const saveButton = utils.getAllByText('Save')[0];
+    const cancelButton = utils.getAllByText('Cancel')[0];
 
     return {
         nameInput,
         ageInput,
         saveButton,
+        cancelButton,
         ...utils,
     }
   }
@@ -63,107 +61,83 @@ const setup = () => {
 describe("Edit Person", () => {
 
 
-  it("renders with current name and age ", () => {
-    const { getByPlaceholderText } = render(
-      <EditPerson personState={personState} />
-    );
-    expect(getByPlaceholderText("Enter Name")).toHaveValue("Mathius");
-    expect(getByPlaceholderText("Enter Age")).toHaveValue(25);
+    it("renders with current name and age ", () => {
+        const { getByPlaceholderText } = render(
+        <EditPerson personState={personState} />
+        );
+        expect(getByPlaceholderText("Enter Name")).toHaveValue("Mathius");
+        expect(getByPlaceholderText("Enter Age")).toHaveValue(25);
 
-  });
+    });
 
 
-  it("loads data and edits a person", async () => {
-        const { nameInput, ageInput, saveButton } = setup()
+    it("loads data and edits a person", async () => {
+            const { nameInput, ageInput, saveButton } = setup()
 
-        const validate = jest.fn()
+            const validate = jest.fn()
 
-        
-        expect(nameInput).toHaveValue("Mathius")
-        expect(ageInput).toHaveValue(25)
+            
+            expect(nameInput).toHaveValue("Mathius")
+            expect(ageInput).toHaveValue(25)
 
-        fireEvent.change(nameInput, {
-        target: { value: "Joe" },
-        });
+            fireEvent.change(nameInput, {
+            target: { value: "Joe" },
+            });
 
-        expect(nameInput).toHaveValue("Joe")
+            expect(nameInput).toHaveValue("Joe")
 
-        fireEvent.change(ageInput, {
-            target: { value: 45 },
-        });
+            fireEvent.change(ageInput, {
+                target: { value: 45 },
+            });
 
-        expect(ageInput).toHaveValue(45)
+            expect(ageInput).toHaveValue(45)
 
-        fireEvent.click(saveButton)
+            fireEvent.click(saveButton)
 
-        expect(onSave).toHaveBeenCalled()
+            expect(onSave).toHaveBeenCalled()
 
     })
 
 
-  it("validates that the name is not blank", () => {
-    const { nameInput, ageInput, saveButton, ...utils } = setup()
+    it("validates that the name is not blank", async() => {
+        const validate = jest.fn()
+        
+        const { nameInput, ageInput, saveButton, ...utils } = setup()
 
-    fireEvent.change(nameInput, {
-        target: { value: "" },
+        fireEvent.change(nameInput, {
+            target: { value: "" },
         });    
 
-    fireEvent.click(saveButton);
+        fireEvent.click(saveButton);
 
-    // expect(utils.getByText(/Name cannot be blank/i)).toBeInTheDocument();
-    expect(onSave).not.toHaveBeenCalled();
-  });
+        // console.log(utils.debug(), saveButton);
+        // await waitFor(() => {
+        //     utils.getByText("Name cannot be blank")
+        // })
+        expect(utils.getByText(/Name cannot be blank/i)).toBeInTheDocument();
+        expect(onSave).not.toHaveBeenCalled();
+    });
 
-//   it("can successfully save after trying to submit an empty student name", () => {
-//     const onSave = jest.fn();
-//     const {
-//       getByText,
-//       getByPlaceholderText,
-//       queryByText,
-//       debug,
-//       container,
-//     } = render(<Form interviewers={interviewers} onSave={onSave} />);
+    it("cancels editing a person and resets the placeholder value", () => {
+    setup()
 
-//     fireEvent.click(getByText("Save"));
+        const reset = jest.fn()
 
-//     expect(getByText(/Student name cannot be blank/i)).toBeInTheDocument();
-//     expect(onSave).not.toHaveBeenCalled();
+        const { nameInput, ageInput, cancelButton, saveButton, ...utils } = setup()
 
-//     fireEvent.change(getByPlaceholderText("Enter Student Name"), {
-//       target: { value: "Lydia Miller-Jones" },
-//     });
-//     fireEvent.click(getByAltText(container, "Sylvia Palmer"));
 
-//     fireEvent.click(getByText("Save"));
+        fireEvent.change(nameInput, {
+            target: { value: 'Joe' }
+        })
 
-//     expect(queryByText(/Student name cannot be blank/i)).toBeNull();
+        expect(nameInput).toHaveValue('Joe')
 
-//     expect(onSave).toHaveBeenCalledTimes(1);
-//   });
+        fireEvent.click(cancelButton)
+        
+        // console.log(utils.debug());
+        expect(nameInput).toHaveValue('')
+        expect(ageInput).toHaveValue(null)
 
-//   it("calls onCancel and resets the input field", () => {
-//     const onCancel = jest.fn();
-//     const { getByText, getByPlaceholderText, queryByText } = render(
-//       <Form
-//         interviewers={interviewers}
-//         name="Lydia Mill-Jones"
-//         onSave={jest.fn()}
-//         onCancel={onCancel}
-//       />
-//     );
 
-//     fireEvent.click(getByText("Save"));
-
-//     fireEvent.change(getByPlaceholderText("Enter Student Name"), {
-//       target: { value: "Lydia Miller-Jones" },
-//     });
-
-//     fireEvent.click(getByText("Cancel"));
-
-//     expect(queryByText(/student name cannot be blank/i)).toBeNull();
-
-//     expect(getByPlaceholderText("Enter Student Name")).toHaveValue("");
-
-//     expect(onCancel).toHaveBeenCalledTimes(1);
-//   });
+    })
 });

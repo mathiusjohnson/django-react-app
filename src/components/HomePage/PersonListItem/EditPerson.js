@@ -20,13 +20,14 @@ export default function EditPerson ({personState, onCancel, onSave}) {
     };
 
     function validate() {
-        if (name === undefined) {
+        console.log(age);
+        if (name === "") {
         setNameBorder("red")
         setError("Name cannot be blank");
         return;
         }
 
-        if (age === undefined) {
+        if (age === "") {
         setAgeBorder("red")
         setError("Age cannot be blank")
         return;
@@ -75,9 +76,11 @@ export default function EditPerson ({personState, onCancel, onSave}) {
             <Button onClick={cancel} danger="true" color="secondary">
                 Cancel
             </Button>
-            <button onClick={() => validate()} confirm="true" color="primary">
+            <Button onClick={() => {
+                validate()
+            }} confirm="true" color="primary">
                 Save
-            </button>
+            </Button>
         </section>
         <div>{error}</div>
         </main>

@@ -84,13 +84,11 @@ describe("Person List Item", () => {
     })
 
     it("edits a person and calls save", () => {
-        const save = jest.fn()
-
         const { EditButton, ...utils } = setup()
 
         fireEvent.click(EditButton)
 
-        const nameInput = utils.getByPlaceholderText('Enter Name')
+        const nameInput = utils.getAllByPlaceholderText('Enter Name')[0]
 
         fireEvent.change(nameInput, {
             target: { value: 'Joe' }
@@ -98,7 +96,7 @@ describe("Person List Item", () => {
 
         expect(nameInput).toHaveValue('Joe')
 
-        const ageInput = utils.getByPlaceholderText('Enter Age')
+        const ageInput = utils.getAllByPlaceholderText('Enter Age')[0]
 
         fireEvent.change(ageInput, {
             target: { value: 45 }
@@ -112,13 +110,5 @@ describe("Person List Item", () => {
 
         // console.log(utils.debug());
         expect(utils.getByText("Updating User...")).toBeInTheDocument()
-    })
-
-    it("cancels editing a person, and resets the placeholder value", () => {
-        setup()
-
-        const { EditButton, ...utils } = setup()
-
-
     })
 })

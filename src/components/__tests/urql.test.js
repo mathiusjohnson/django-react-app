@@ -2,12 +2,12 @@ import { mount, configure } from 'enzyme';
 import { Provider } from 'urql';
 import { never, fromValue } from 'wonka';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import { screen } from '@testing-library/dom'
-
+import {
+    cleanup, fireEvent, render,
+  } from "@testing-library/react";
 import { People } from '../HomePage/PersonList';
 import CreatePerson from '../HomePage/CreatePerson';
 import EditPerson from '../HomePage/PersonListItem/EditPerson';
-// import EditPerson from '../components/PersonListItem/EditPerson';
 
 configure({ adapter: new Adapter() });
 
@@ -21,56 +21,83 @@ const mockClient = {
 //     onSave:jest.fn(
 //     )
 // }))
+afterEach(cleanup);
+
+
+const onSave = jest.fn();
+    
+const responseState = {
+    executeQuery: () =>
+      fromValue({
+        data: {
+            allPersons: [
+                {
+                  id: "10",
+                  name: "Joe Two",
+                  age: 22,
+                  addressOne: {
+                    street: "38030 loggers lane",
+                    city: "Squamish",
+                    region: "BC",
+                    country: "Canada",
+                    postalCode: "v8b0z9"
+                  },
+                  addressTwo: {
+                    street: "38030 loggers lane",
+                    city: "Squamish",
+                    region: "BC",
+                    country: "Canada",
+                    postalCode: "v8b0z9"
+                  }
+                },
+                {
+                    id: "10",
+                    name: "Joe Two",
+                    age: 22,
+                    addressOne: {
+                      street: "38030 loggers lane",
+                      city: "Squamish",
+                      region: "BC",
+                      country: "Canada",
+                      postalCode: "v8b0z9"
+                    },
+                    addressTwo: {
+                      street: "38030 loggers lane",
+                      city: "Squamish",
+                      region: "BC",
+                      country: "Canada",
+                      postalCode: "v8b0z9"
+                    }
+                  }
+                ]
+            }
+      }),
+  };
+
+const personState = {
+    id: 1,
+    oldName: 'Mathius', 
+    oldAge: 25, 
+    addressOne: {
+        street: '1234', 
+        city: 'edd', 
+        region: 'ddd', 
+        country: 'can', 
+        postalCode: 'v8b0z9'
+    },
+    addressTwo: {
+        street: '1234', 
+        city: 'edd', 
+        region: 'ddd', 
+        country: 'can', 
+        postalCode: 'v8b0z9'
+    },     
+}
+
+
 describe("urql tests", () => {
 
     it.skip('matches snapshot', () => {
-        const responseState = {
-            executeQuery: () =>
-              fromValue({
-                data: {
-                    allPersons: [
-                        {
-                          id: "10",
-                          name: "Joe Two",
-                          age: 22,
-                          addressOne: {
-                            street: "38030 loggers lane",
-                            city: "Squamish",
-                            region: "BC",
-                            country: "Canada",
-                            postalCode: "v8b0z9"
-                          },
-                          addressTwo: {
-                            street: "38030 loggers lane",
-                            city: "Squamish",
-                            region: "BC",
-                            country: "Canada",
-                            postalCode: "v8b0z9"
-                          }
-                        },
-                        {
-                            id: "10",
-                            name: "Joe Two",
-                            age: 22,
-                            addressOne: {
-                              street: "38030 loggers lane",
-                              city: "Squamish",
-                              region: "BC",
-                              country: "Canada",
-                              postalCode: "v8b0z9"
-                            },
-                            addressTwo: {
-                              street: "38030 loggers lane",
-                              city: "Squamish",
-                              region: "BC",
-                              country: "Canada",
-                              postalCode: "v8b0z9"
-                            }
-                          }
-                        ]
-                    }
-              }),
-          };
     
       const wrapper = mount(
         <Provider value={responseState}>
@@ -81,7 +108,6 @@ describe("urql tests", () => {
     });
     
     it.skip('triggers a create person mutation', () => {
-        const save = jest.fn();
     
         const wrapper = mount(
           <Provider value={mockClient}>
@@ -103,6 +129,7 @@ describe("urql tests", () => {
             countryTwo: 'can',
             postalCodeTwo: 'v8b0z9'  
           };
+
         wrapper.find('input[name="personName"]').simulate('change', {
              target: { value: variables.name } });
         wrapper.find('input[name="age"]').simulate('change', {
@@ -142,77 +169,8 @@ describe("urql tests", () => {
       });
     
     it('triggers an update person mutation', () => {
-        const onSave = jest.fn();
     
-        const responseState = {
-            executeQuery: () =>
-              fromValue({
-                data: {
-                    allPersons: [
-                        {
-                          id: "10",
-                          name: "Joe Two",
-                          age: 22,
-                          addressOne: {
-                            street: "38030 loggers lane",
-                            city: "Squamish",
-                            region: "BC",
-                            country: "Canada",
-                            postalCode: "v8b0z9"
-                          },
-                          addressTwo: {
-                            street: "38030 loggers lane",
-                            city: "Squamish",
-                            region: "BC",
-                            country: "Canada",
-                            postalCode: "v8b0z9"
-                          }
-                        },
-                        {
-                            id: "10",
-                            name: "Joe Two",
-                            age: 22,
-                            addressOne: {
-                              street: "38030 loggers lane",
-                              city: "Squamish",
-                              region: "BC",
-                              country: "Canada",
-                              postalCode: "v8b0z9"
-                            },
-                            addressTwo: {
-                              street: "38030 loggers lane",
-                              city: "Squamish",
-                              region: "BC",
-                              country: "Canada",
-                              postalCode: "v8b0z9"
-                            }
-                          }
-                        ]
-                    }
-              }),
-          };
-        
-        const personState = {
-            id: 1,
-            oldName: 'Mathius', 
-            oldAge: 25, 
-            addressOne: {
-                street: '1234', 
-                city: 'edd', 
-                region: 'ddd', 
-                country: 'can', 
-                postalCode: 'v8b0z9'
-            },
-            addressTwo: {
-                street: '1234', 
-                city: 'edd', 
-                region: 'ddd', 
-                country: 'can', 
-                postalCode: 'v8b0z9'
-            },     
-        }
-    
-        const wrapper = mount(
+        const utils = render(
             <Provider value={responseState}>
                 <EditPerson 
                     personState={personState}
@@ -226,25 +184,20 @@ describe("urql tests", () => {
             name: 'New Name',
             age: 35
         }
-        const nameInput = wrapper.find('input[name="name"]')
-        const ageInput = wrapper.find('input[name="age"]')
+        const nameInput = utils.getAllByPlaceholderText('Enter Name')[0]
+        const ageInput = utils.getAllByPlaceholderText('Enter Age')[0]
     
-        nameInput.simulate('change', {
+        fireEvent.change(nameInput, {
             target: { value: variables.name } });
-        ageInput.simulate('change', {
+
+        fireEvent.change(ageInput, {
             target: { value: variables.age } });
     
-    
-        const button = wrapper.findWhere(node => {
-        return (
-            node.type() &&
-            node.name() &&
-            node.text() === "Save"
-            )
-        })
+        const saveButton = utils.getAllByText("Save")[0]
         
-        button.simulate('click');
+        fireEvent.click(saveButton)
+
         expect(onSave).toBeCalledTimes(1);
-        expect(onSave).toBeCalledWith("New Name", 35);
+        expect(onSave).toBeCalledWith("New Name", "35");
     });
 })
