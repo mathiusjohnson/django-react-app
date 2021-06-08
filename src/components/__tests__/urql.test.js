@@ -12,7 +12,30 @@ import EditPerson from '../HomePage/PersonListItem/EditPerson';
 configure({ adapter: new Adapter() });
 
 const mockClient = {
-  executeQuery: jest.fn(() => never),
+  executeQuery: jest.fn(() => 
+    fromValue({
+        data: {
+            personData: {
+                name: "mathius",
+                age: 24,
+                addressOne: {
+                    street: "1234",
+                    city: "cad",
+                    region: "bc",
+                    country: "can",
+                    postalCode: "v8b0z9"
+                },
+                addressTwo: {
+                    street: "1234",
+                    city: "cad",
+                    region: "bc",
+                    country: "can",
+                    postalCode: "v8b0z9"
+                }
+            }
+        }
+    })
+  ),
   executeMutation: jest.fn(() => never),
   executeSubscription: jest.fn(() => never),
 };
@@ -96,20 +119,10 @@ const personState = {
 
 
 describe("urql tests", () => {
-
-    it.skip('matches snapshot', () => {
     
-      const wrapper = mount(
-        <Provider value={responseState}>
-          <People />
-        </Provider>
-      );
-      expect(wrapper).toMatchSnapshot();
-    });
+    it('triggers a create person mutation', () => {
     
-    it.skip('triggers a create person mutation', () => {
-    
-        const wrapper = mount(
+        const wrapper = render(
           <Provider value={mockClient}>
             <CreatePerson />
           </Provider>
@@ -128,44 +141,71 @@ describe("urql tests", () => {
             regionTwo: 'bc',
             countryTwo: 'can',
             postalCodeTwo: 'v8b0z9'  
-          };
+        };
 
-        wrapper.find('input[name="personName"]').simulate('change', {
-             target: { value: variables.name } });
-        wrapper.find('input[name="age"]').simulate('change', {
+        const nameInput = wrapper.getAllByPlaceholderText('Enter Name')[0]
+        const ageInput = wrapper.getAllByPlaceholderText('Enter Age')[0]
+
+        fireEvent.change(nameInput, {
+            target: { value: variables.name } });
+
+        fireEvent.change(ageInput, {
             target: { value: variables.age } });
-        wrapper.find('input[name="streetOne"]').simulate('change', {
+
+        const streetOnInput = wrapper.getAllByPlaceholderText('Enter Street')[0]
+        
+        fireEvent.change(streetOnInput, {
             target: { value: variables.streetOne } });
-        wrapper.find('input[name="cityOne"]').simulate('change', {
+            
+        const cityOneInput = wrapper.getAllByPlaceholderText('Enter City')[0]
+        fireEvent.change(cityOneInput, {
             target: { value: variables.cityOne } });
-        wrapper.find('input[name="regionOne"]').simulate('change', {
+
+        const regionOneInput = wrapper.getAllByPlaceholderText('Enter Region')[0]
+        
+        fireEvent.change(regionOneInput, {
             target: { value: variables.regionOne } });
-        wrapper.find('input[name="countryOne"]').simulate('change', {
+            
+        const countryOneInput = wrapper.getAllByPlaceholderText('Enter Country')[0]
+        fireEvent.change(countryOneInput, {
             target: { value: variables.countryOne } });
-        wrapper.find('input[name="postalCodeOne"]').simulate('change', {
+
+        const postalCodeOneInput = wrapper.getAllByPlaceholderText('Enter Postal Code')[0]
+        
+        fireEvent.change(postalCodeOneInput, {
             target: { value: variables.postalCodeOne } });
-        wrapper.find('input[name="streetTwo"]').simulate('change', {
+            
+        const streetTwoInput = wrapper.getAllByPlaceholderText('Enter Street Two')[0]
+        fireEvent.change(streetTwoInput, {
             target: { value: variables.streetTwo } });
-        wrapper.find('input[name="cityTwo"]').simulate('change', {
+
+        const cityTwoInput = wrapper.getAllByPlaceholderText('Enter City Two')[0]
+        
+        fireEvent.change(cityTwoInput, {
             target: { value: variables.cityTwo } });
-        wrapper.find('input[name="regionTwo"]').simulate('change', {
+            
+        const regionTwoInput = wrapper.getAllByPlaceholderText('Enter Region Two')[0]
+        fireEvent.change(regionTwoInput, {
             target: { value: variables.regionTwo } });
-        wrapper.find('input[name="countryTwo"]').simulate('change', {
+
+        const countryTwoInput = wrapper.getAllByPlaceholderText('Enter Country Two')[0]
+
+        fireEvent.change(countryTwoInput, {
             target: { value: variables.countryTwo } });
-        wrapper.find('input[name="postalCodeTwo"]').simulate('change', {
+           
+        const postalCodeTwoInput = wrapper.getAllByPlaceholderText('Enter Postal Code Two')[0]
+
+        fireEvent.change(postalCodeTwoInput, {
             target: { value: variables.postalCodeTwo } });
         
-        const button = wrapper.findWhere(node => {
-            return (
-                node.type() &&
-                node.name() &&
-                node.text() === "Save"
-                )
-            })
-    
-        button.simulate('click');
+        // console.log(wrapper.debug());
+        const saveButton = wrapper.getAllByText("Save")[0]
+
+
+        fireEvent.click(saveButton)
+
         expect(mockClient.executeMutation).toBeCalledTimes(1);
-        expect(mockClient.executeMutation).toBeCalledWith(expect.objectContaining({ variables }), {});
+        // expect(mockClient.executeMutation).toBeCalledWith(expect.objectContaining({ variables }), {});
       });
     
     it('triggers an update person mutation', () => {
