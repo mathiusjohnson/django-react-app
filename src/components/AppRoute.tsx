@@ -1,6 +1,5 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { History, Location } from 'history';
 import * as H from "history";
 
 export interface RouteComponentProps<P> {
@@ -16,15 +15,11 @@ export interface match<P> {
   path: string;
   url: string;
 }
-interface AppRouteProps extends RouteComponentProps<any> {
+interface AppRouteProps {
     component: () => JSX.Element;
     path: string;
     isPrivate: boolean;
-    // props: {}[];
     key: string;
-    location: Location;
-    history: History;
-    props: any;
 }
 
 // interface ComponentProps { 
@@ -35,7 +30,7 @@ interface AppRouteProps extends RouteComponentProps<any> {
 // }
 
 
-const AppRoutes: React.FC<AppRouteProps> = ({ component: Component, path, isPrivate, ...rest }) => {
+const AppRoute: React.FC<AppRouteProps> = ({ component: Component, path, isPrivate, ...rest }) => {
     
 	return (
 		<Route
@@ -54,4 +49,4 @@ const AppRoutes: React.FC<AppRouteProps> = ({ component: Component, path, isPriv
 	
 };
 
-export default AppRoutes;
+export default AppRoute;

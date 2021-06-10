@@ -11,7 +11,7 @@ it('renders', () => {
     executeSubscription: jest.fn(() => never),
   };
 
-  const wrapper = render(
+ render(
     <Provider value={mockClient}>
       <App />
     </Provider>
