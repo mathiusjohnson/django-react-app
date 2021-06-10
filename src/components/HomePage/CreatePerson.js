@@ -316,12 +316,12 @@ export default function CreatePerson ({back}) {
                         onClick={cancel} danger="true" color="secondary">
                             Cancel
                     </Button>
-                    <button 
+                    <Button 
                         id="savebutton"
                         data-testid="save"
                         onClick={() => save()} confirm="true" color="primary">
                         Save
-                    </button>
+                    </Button>
                 </div>
             </form>
         <div className="col-span-5 text-red-500"> {error}</div>

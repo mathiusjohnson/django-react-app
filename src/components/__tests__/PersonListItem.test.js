@@ -106,7 +106,6 @@ describe("Person List Item", () => {
 
         fireEvent.click(saveButton)
 
-        // console.log(utils.debug());
         expect(utils.getByText("Updating User...")).toBeInTheDocument()
     })
 })

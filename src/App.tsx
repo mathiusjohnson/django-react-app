@@ -26,11 +26,9 @@ function App() {
   return (
     <div className="App">
         <Provider value={client}>
-
             <Router>
                 <LocationContextProvider>
                     <AuthProvider>
-
                         <Navigation />
                         <Switch>
                             <Route exact path = '/'
@@ -38,22 +36,21 @@ function App() {
                                 return (
                                     <Redirect to ="/home"/>
                                 )
-                                }} />
+                            }} />
+
                             {routes.map((route) => (
                                 <AppRoute
-                                key={route.path}
-                                path={route.path}
-                                component={route.component}
-                                isPrivate={route.isPrivate}
+                                    key={route.path}
+                                    path={route.path}
+                                    component={route.component}
+                                    isPrivate={route.isPrivate}
                                 />
                             ))}
                         </Switch>
-
                     </AuthProvider>     
                 </LocationContextProvider>
             </Router>
         </Provider>
-
     </div>
   );
 }

@@ -94,22 +94,16 @@ describe("PersonList", () => {
                 </Router>
             </Provider>
             )
-            
-            // const AddButton = wrapper.findWhere(node => {
-            //     return node.type() === 'button' && node.text() === "Add New Person";
-            //   });
+
             const AddButton = wrapper.getByText("Add New Person")
             
             fireEvent.click(AddButton)
 
-            // AddButton.simulate('click')
-            // const nameInput = wrapper.find('input[name="personName"]')
             await waitFor(() => {
                 wrapper.getAllByPlaceholderText('Enter Name')[0]
             })
             const nameInput = wrapper.getAllByPlaceholderText('Enter Name')[0]
 
-            // console.log(AddButton);
             expect(nameInput).toHaveValue("")
         })
     })

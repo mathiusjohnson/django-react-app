@@ -2,7 +2,6 @@ import React from 'react';
 
 const ShowAddressOne = ({address}) => {
 
-    console.log(address.street);
     if (address.street !== null) {
         const street = address.street
         const city = address.city

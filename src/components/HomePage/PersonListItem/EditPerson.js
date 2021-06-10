@@ -20,7 +20,6 @@ export default function EditPerson ({personState, onCancel, onSave}) {
     };
 
     function validate() {
-        console.log(age);
         if (name === "") {
         setNameBorder("red")
         setError("Name cannot be blank");

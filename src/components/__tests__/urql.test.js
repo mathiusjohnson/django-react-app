@@ -1,9 +1,9 @@
 import { mount, configure } from 'enzyme';
 import { Provider } from 'urql';
-import { never, fromValue } from 'wonka';
+import { never, fromValue, pipe } from 'wonka';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import {
-    cleanup, fireEvent, render,
+    cleanup, fireEvent, render, waitFor,
   } from "@testing-library/react";
 import { People } from '../HomePage/PersonList';
 import CreatePerson from '../HomePage/CreatePerson';
@@ -48,7 +48,22 @@ afterEach(cleanup);
 
 
 const onSave = jest.fn();
-    
+
+const variables = { 
+    name: 'mathius', 
+    age: 24, 
+    streetOne: '1234',
+    cityOne: 'cad',
+    regionOne: 'bc',
+    countryOne: 'can',
+    postalCodeOne: 'v8b0z9',
+    streetTwo: '1234',
+    cityTwo: 'cad',
+    regionTwo: 'bc',
+    countryTwo: 'can',
+    postalCodeTwo: 'v8b0z9'  
+};
+
 const responseState = {
     executeQuery: () =>
       fromValue({
@@ -94,7 +109,8 @@ const responseState = {
                   }
                 ]
             }
-      }),
+    }),
+    executeMutation: jest.fn(() => pipe(fromValue(variables), delay(100)))
   };
 
 const personState = {
@@ -120,10 +136,10 @@ const personState = {
 
 describe("urql tests", () => {
     
-    it('triggers a create person mutation', () => {
+    it('triggers a create person mutation', async() => {
     
         const wrapper = render(
-          <Provider value={mockClient}>
+          <Provider value={responseState}>
             <CreatePerson />
           </Provider>
         );
@@ -198,13 +214,17 @@ describe("urql tests", () => {
         fireEvent.change(postalCodeTwoInput, {
             target: { value: variables.postalCodeTwo } });
         
-        // console.log(wrapper.debug());
         const saveButton = wrapper.getAllByText("Save")[0]
 
 
+        console.log('wrapper: ', wrapper.debug());
         fireEvent.click(saveButton)
 
-        expect(mockClient.executeMutation).toBeCalledTimes(1);
+        await waitFor(() => {
+            wrapper.getAllByText('Adding Person...')
+        })
+
+        // expect(mockClient.executeMutation).toBeCalledTimes(1);
         // expect(mockClient.executeMutation).toBeCalledWith(expect.objectContaining({ variables }), {});
       });
     

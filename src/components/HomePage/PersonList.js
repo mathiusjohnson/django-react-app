@@ -61,8 +61,6 @@ export const People = () => {
     transition(CREATE)
   }
 
-
-  
   return (
     <div>
       
@@ -72,9 +70,9 @@ export const People = () => {
 
       {mode === 'SHOW' && (
         <div className="my-4">
-          <button type="button" onClick={() => onCreateClicked()} variant="contained" color="primary">
+          <Button type="button" onClick={() => onCreateClicked()} variant="contained" color="primary">
             Add New Person
-          </button>
+          </Button>
         </div>
       )}
 

@@ -1,4 +1,3 @@
-
 import React from "react";
 
 import {
@@ -110,7 +109,6 @@ describe("Edit Person", () => {
 
         fireEvent.click(saveButton);
 
-        // console.log(utils.debug(), saveButton);
         // await waitFor(() => {
         //     utils.getByText("Name cannot be blank")
         // })
@@ -134,7 +132,6 @@ describe("Edit Person", () => {
 
         fireEvent.click(cancelButton)
         
-        // console.log(utils.debug());
         expect(nameInput).toHaveValue('')
         expect(ageInput).toHaveValue(null)
 
