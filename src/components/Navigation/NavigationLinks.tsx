@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 import { LocationContext } from '../../context/index';
 import { loginUser, logout, useAuthState, useAuthDispatch } from '../../context/UserContext/index' 
 
-const NavigationLinks = () => {
-    const { currentLocation, editButtonText, setEditButtonText } = useContext(LocationContext);
+const NavigationLinks: React.FC = () => {
+    const { currentLocation } = useContext(LocationContext);
     // const { currentUser } = useContext(LocationContext);
     const dispatch = useAuthDispatch() //get the dispatch method from the useDispatch custom hook
     const userDetails = useAuthState() //read user details from context
 
-    const activeClass = (location) => {
+    const activeClass = (location: string) => {
         if (location === currentLocation) {
             return 'border-b-2 border-solid border-white'
         } else {
@@ -18,11 +18,11 @@ const NavigationLinks = () => {
         }
     }
 
-    const handleLogin = async (e) => {
-        e.preventDefault()
+    const handleLogin = async (event: React.ChangeEvent<any>) => {
+        event.preventDefault()
         let payload = {name: "joe", email: "joe@test.ca", isAdmin: true}
         try {
-            let response = await loginUser(dispatch, payload) //loginUser action makes the request and handles all the neccessary state changes
+            await loginUser(dispatch, payload) //loginUser action makes the request and handles all the neccessary state changes
         } catch (error) {
             console.error(error)
         }

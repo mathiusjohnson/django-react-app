@@ -3,10 +3,10 @@ import { withRouter } from "react-router-dom";
 import NavigationLinks from "./NavigationLinks";
 import { LocationContext } from '../../context/index';
 
-function Navigation(props) {
+
+function Navigation() {
     const { currentLocation } = useContext(LocationContext);
 
-    const dropDownPosition = props.location.pathname === '/home' || props.location.pathname === '/' ? 'start' : 'center'
     return (
 
         <nav className="mb-12">
