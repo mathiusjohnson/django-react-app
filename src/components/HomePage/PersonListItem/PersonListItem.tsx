@@ -4,6 +4,7 @@ import { useMutation } from 'urql';
 import Status from "./Status";
 import EditPerson from './EditPerson';
 import ShowPerson from './ShowPerson';
+import { iPersonListItemProps } from '../../../shared/interfaces/people.interface';
 
 const SHOW = "SHOW";
 const SAVING = "SAVING";
@@ -36,7 +37,7 @@ mutation ($id: ID!, $name: String!, $age: Int!) {
 }
 `
 
-const PersonListItem = ({person, refresh}) => {
+const PersonListItem: React.FC<iPersonListItemProps> = ({person, refresh}) => {
     const { mode, transition, back } = useVisualMode(SHOW);
     const [personState, updatePersonState] = useState(person)
     const [updatePersonResult, updatePerson] = useMutation(UPDATE_PERSON_QUERY);
@@ -46,7 +47,7 @@ const PersonListItem = ({person, refresh}) => {
         transition(EDIT)
     }
 
-    function save(newName, newAge) {
+    function save(newName: string, newAge: number) {
         const id = person.id
         const variables = { id, name: newName || '', age: newAge || '' };
 
@@ -85,7 +86,6 @@ const PersonListItem = ({person, refresh}) => {
     
                 {mode === 'EDIT' && (
                     <EditPerson
-                        id={person.id}
                         onCancel={back}
                         onSave={save}
                         personState={personState}

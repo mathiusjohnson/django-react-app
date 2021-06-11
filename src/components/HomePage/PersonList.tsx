@@ -3,7 +3,7 @@ import { useQuery } from 'urql';
 import useVisualMode from '../../hooks/useVisualMode'
 import CreatePerson from './CreatePerson';
 import PersonListItem from './PersonListItem/index';
-
+import { iPerson } from '../../shared/interfaces/people.interface';
 
 const SHOW = "SHOW";
 const CREATE = "CREATE";
@@ -32,6 +32,7 @@ query{
 }
 `;
 
+
 export const People = () => {
   const { mode, transition, back } = useVisualMode(SHOW);
 
@@ -49,7 +50,7 @@ export const People = () => {
     reexecuteQuery({ requestPolicy: 'network-only' });
   };
 
-  const renderedPersons = data.allPersons.map((person, index) => {
+  const renderedPersons = data.allPersons.map((person: iPerson, index: number) => {
     return (
       <li key={index}>
         <PersonListItem refresh={refresh} person={person} />

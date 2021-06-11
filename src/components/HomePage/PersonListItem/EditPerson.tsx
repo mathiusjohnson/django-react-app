@@ -1,10 +1,18 @@
 import React, { useState } from "react";
-import Button from '@material-ui/core/Button';
+import Button from '../../Button';
 import ShowAddress from './ShowAddress';
+import {iPerson} from '../../../shared/interfaces/people.interface'
+import { StringLiteralType } from "typescript";
 
-export default function EditPerson ({personState, onCancel, onSave}) {
-    const [name, setName] = useState(personState.name || "");
-    const [age, setAge] = useState(personState.age || "");
+interface iEditPersonProps {
+  personState: iPerson;
+  onCancel: () => void;
+  onSave: (newName: string, newAge: number) => void;
+}
+
+const EditPerson: React.FC<iEditPersonProps> = ({personState, onCancel, onSave}) => {
+    const [newName, setName] = useState(personState.name || "");
+    const [newAge, setAge] = useState(personState.age || null);
     const [error, setError] = useState("");
     const [nameBorder, setNameBorder] = useState("green")
     const [ageBorder, setAgeBorder] = useState("green")
@@ -20,21 +28,21 @@ export default function EditPerson ({personState, onCancel, onSave}) {
     };
 
     function validate() {
-        if (name === "") {
+        if (newName === "") {
         setNameBorder("red")
         setError("Name cannot be blank");
         return;
         }
 
-        if (age === "") {
+        if (newAge === null) {
         setAgeBorder("red")
         setError("Age cannot be blank")
         return;
         }
         
-        if (name !== "" && age !== null){
+        if (newName !== "" && newAge !== null){
         setError("");
-        onSave(name, age)
+        onSave(newName, newAge)
         } 
     }
 
@@ -47,7 +55,7 @@ export default function EditPerson ({personState, onCancel, onSave}) {
                 name="name"
                 type="text"
                 placeholder="Enter Name"
-                value={name || "" }
+                value={newName || "" }
                 data-testid="person-name-input"
                 onChange={(event) => {
                     setName(event.target.value) 
@@ -59,10 +67,10 @@ export default function EditPerson ({personState, onCancel, onSave}) {
                 name="age"
                 type="number"
                 placeholder="Enter Age"
-                value={age || "" }
+                value={newAge || "" }
                 data-testid="person-age-input"
                 onChange={(event) => {
-                    setAge(event.target.value) 
+                    setAge(parseInt(event.target.value)) 
                     setError("")
                 }}
                 />
@@ -85,3 +93,5 @@ export default function EditPerson ({personState, onCancel, onSave}) {
         </main>
     );
 }
+
+export default EditPerson;

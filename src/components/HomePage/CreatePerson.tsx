@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import Button from '@material-ui/core/Button';
+import React, { ChangeEvent, useState } from "react";
+import Button from '../Button';
 import { useMutation } from 'urql';
 import useVisualMode from '../../hooks/useVisualMode'
 
@@ -48,32 +48,36 @@ mutation ($name: String!, $age: Int!, $streetOne: String!, $cityOne: String!, $r
     }
 }
 `
+interface iCreatePerson {
+  back: () => void;
+}
 
-export default function CreatePerson ({back}) {
+
+const CreatePerson: React.FC<iCreatePerson> = ({back}) =>{
   const { transition } = useVisualMode(SHOW);
 
-  const [name, setName] = useState();
-  const [age, setAge] = useState();
-  const [addressOneStreet, setAddressOneStreet] = useState();
-  const [addressOneCity, setAddressOneCity] = useState();
-  const [addressOneRegion, setAddressOneRegion] = useState();
-  const [addressOneCountry, setAddressOneCountry] = useState();
-  const [addressOnePostal, setAddressOnePostal] = useState();
-  const [addressTwoStreet, setAddressTwoStreet] = useState();
-  const [addressTwoCity, setAddressTwoCity] = useState();
-  const [addressTwoRegion, setAddressTwoRegion] = useState();
-  const [addressTwoCountry, setAddressTwoCountry] = useState();
-  const [addressTwoPostal, setAddressTwoPostal] = useState();  
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [addressOneStreet, setAddressOneStreet] = useState("");
+  const [addressOneCity, setAddressOneCity] = useState("");
+  const [addressOneRegion, setAddressOneRegion] = useState("");
+  const [addressOneCountry, setAddressOneCountry] = useState("");
+  const [addressOnePostal, setAddressOnePostal] = useState("");
+  const [addressTwoStreet, setAddressTwoStreet] = useState("");
+  const [addressTwoCity, setAddressTwoCity] = useState("");
+  const [addressTwoRegion, setAddressTwoRegion] = useState("");
+  const [addressTwoCountry, setAddressTwoCountry] = useState("");
+  const [addressTwoPostal, setAddressTwoPostal] = useState("");  
   const [nameBorder, setNameBorder] = useState("gray")
   const [ageBorder, setAgeBorder] = useState("gray")
   const [addressBorder, setAddressBorder] = useState("gray")
-  const [error, setError] = useState();
+  const [error, setError] = useState("");
 
   const [createPersonResult, createPerson] = useMutation(CREATE_PERSON_QUERY);
 
   const reset = () => {
     setName("");
-    setAge(null)
+    setAge("")
   };
 
   const cancel = () => {
@@ -129,9 +133,9 @@ export default function CreatePerson ({back}) {
                     placeholder="Enter Name"
                     value={name || "" }
                     onChange={(event) => {
-                    setName(event.target.value) 
-                    setNameBorder("green")
-                    setError("")
+                      setName(event.target.value) 
+                      setNameBorder("green")
+                      setError("")
                     }}
                     data-testid="name"
                 />
@@ -144,10 +148,10 @@ export default function CreatePerson ({back}) {
                     type="number"
                     placeholder="Enter Age"
                     value={age || "" }
-                    onChange={(event) => {
-                    setAge(event.target.value) 
-                    setAgeBorder("green")
-                    setError("")
+                    onChange={(event: ChangeEvent<HTMLInputElement>): void => {
+                      setAge(event.target.value) 
+                      setAgeBorder("green")
+                      setError("")
                     }}
                 />
                 </div>
@@ -163,9 +167,9 @@ export default function CreatePerson ({back}) {
                         placeholder="Enter Street"
                         value={addressOneStreet || "" }
                         onChange={(event) => {
-                        setAddressOneStreet(event.target.value) 
-                        setAddressBorder("green")
-                        setError("")
+                          setAddressOneStreet(event.target.value) 
+                          setAddressBorder("green")
+                          setError("")
                         }}
                     />
                     </div>
@@ -178,9 +182,9 @@ export default function CreatePerson ({back}) {
                         placeholder="Enter City"
                         value={addressOneCity || "" }
                         onChange={(event) => {
-                        setAddressOneCity(event.target.value) 
-                        setAddressBorder("green")
-                        setError("")
+                          setAddressOneCity(event.target.value) 
+                          setAddressBorder("green")
+                          setError("")
                         }}
                     />
                     </div>
@@ -193,9 +197,9 @@ export default function CreatePerson ({back}) {
                         placeholder="Enter Region"
                         value={addressOneRegion || "" }
                         onChange={(event) => {
-                        setAddressOneRegion(event.target.value) 
-                        setAddressBorder("green")
-                        setError("")
+                          setAddressOneRegion(event.target.value) 
+                          setAddressBorder("green")
+                          setError("")
                         }}
                     />
                     </div>
@@ -208,9 +212,9 @@ export default function CreatePerson ({back}) {
                         placeholder="Enter Country"
                         value={addressOneCountry || "" }
                         onChange={(event) => {
-                        setAddressOneCountry(event.target.value) 
-                        setAddressBorder("green")
-                        setError("")
+                          setAddressOneCountry(event.target.value) 
+                          setAddressBorder("green")
+                          setError("")
                         }}
                     />
                     </div>
@@ -333,3 +337,5 @@ export default function CreatePerson ({back}) {
     )
   }
 }
+
+export default CreatePerson;
