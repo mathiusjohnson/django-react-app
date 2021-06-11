@@ -258,6 +258,6 @@ describe("urql tests", () => {
         fireEvent.click(saveButton)
 
         expect(onSave).toBeCalledTimes(1);
-        expect(onSave).toBeCalledWith("New Name", "35");
+        expect(onSave).toBeCalledWith("New Name", 35);
     });
 })
