@@ -144,13 +144,23 @@ class TestPersonSchema(GraphQLTestCase):
             "name": "Justin"
         }
 
-        print(payload)
+        # print('payload in update test: ', payload)
         response = client.execute(update_person_mutation, variables={"personData": payload})
-        print('response', response)
+        print('response in update test: ', response)
         response_person = response.get("data")
-        name = response_person.get("name")
-        assert name == payload["name"]
-        assert name != person.name 
+        print('response person in update: ', response_person.items())
+        items = list(response_person.items())
+        update_person_item = items[0]
+        personObject = update_person_item[1]
+        print(personObject)
+        name = personObject['person']['name']
+        # response_person = response.get("person")
+        print('name in update: ', type(name), type(payload["name"]), person)
+
+        print(name == 'Justin')
+
+        assert name == 'Justin'
+        assert name != person['name'] 
  
     # def test_delete_blog(self):
     #     payload = {

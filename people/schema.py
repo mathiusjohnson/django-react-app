@@ -4,7 +4,7 @@ import graphene
 from graphene import Schema, Mutation, InputObjectType,ObjectType, String, Boolean, Field, Int, List, NonNull, ID, InputField
 from .models import PersonModel
 from .person import PersonDataClass
-from .addressOne import AddressOneDataClass
+from .addressOne import AddressDataClass
 
 class AddressSchemaOutput(ObjectType):
     street = String()
@@ -107,53 +107,65 @@ class CreatePerson(Mutation):
         dAddOneRegion = dataAddressOne.region
         dAddOneCountry = dataAddressOne.country
         dAddOnePostalCode = dataAddressOne.postalCode
-        print(person_data)
+        # print(person_data)
 
         dataAddressTwo = person_data.address_two
+
         if dataAddressTwo and dataAddressTwo.street and dataAddressTwo.city and dataAddressTwo.region and dataAddressTwo.country and dataAddressTwo.postalCode:
-            print('address two checks out')
+            # print('address two checks out')
+
             dAddTwoStreet = dataAddressTwo.street
             dAddTwoCity = dataAddressTwo.city
             dAddTwoRegion = dataAddressTwo.region
             dAddTwoCountry = dataAddressTwo.country
             dAddTwoPostalCode = dataAddressTwo.postalCode
-            person_data_class = PersonDataClass(
-                name=dataName, 
-                age=dataAge, 
-                address_one=AddressOneDataClass(
+
+            address_one = AddressDataClass(
                     street=dAddOneStreet,
                     city=dAddOneCity,
                     region=dAddOneRegion,
                     country=dAddOneCountry,
                     postalCode=dAddOnePostalCode
-                ), 
-                address_two=AddressOneDataClass(
+            )
+
+            address_two = AddressDataClass(
                     street=dAddTwoStreet,
                     city=dAddTwoCity,
                     region=dAddTwoRegion,
                     country=dAddTwoCountry,
-                    postalCode=dAddTwoPostalCode          
-                )
+                    postalCode=dAddTwoPostalCode
             )
-        else:
-            print('only one address checks out')
-            print(dataName, dataAge)
+
             person_data_class = PersonDataClass(
                 name=dataName, 
                 age=dataAge, 
-                address_one=AddressOneDataClass(
+                address_one=address_one, 
+                address_two=address_two
+            )
+        else:
+            # print('only one address checks out')
+            # print(dataName, dataAge)
+
+            address_one = AddressDataClass(
                     street=dAddOneStreet,
                     city=dAddOneCity,
                     region=dAddOneRegion,
                     country=dAddOneCountry,
                     postalCode=dAddOnePostalCode
-                ), 
             )
-            print(person_data_class)
+
+            person_data_class = PersonDataClass(
+                name=dataName, 
+                age=dataAge, 
+                address_one=address_one, 
+            )
+
+            # print(person_data_class)
         # now create json_data
         person_json_data = cattr.unstructure(person_data_class)
         # create entry in DB
         person_db_record = PersonModel(data=person_json_data)
+        # print('address one after data class created: ', person_db_record.data["address_one"])
         person_db_record.save()
         person_instance = PersonSchemaOutput(
             id = person_db_record.id,
@@ -173,21 +185,26 @@ class UpdatePerson(Mutation):
     ok = Boolean()
 
     def mutate(root, _, person_data=None):
-        print(person_data)
+        # print('person data in update: ', person_data)
         person_db_record = PersonModel.objects.get(pk=person_data.id)
-        print('db record: ', person_db_record.data)
+        # print('db record: ', person_db_record.data)
         if person_db_record:
             # print('db record checks out!!!!!')
-            person_data_class = cattr.structure(person_db_record.data, PersonDataClass)
-            print('data class: ', person_data_class)
+            cattr.register_structure_hook(PersonDataClass, lambda d, t: PersonDataClass(**d))
+
+            person_data_class = cattr.structure(person_db_record.data, PersonDataClass,)
+            print('data class structured: ', person_data_class)
             # this is how you update values within a dataclass attr object and if any validation fails this will error out
             # right now we are
             person_data_class = attr.evolve(person_data_class, name=person_data.name,age=person_data.age, )
-            print('data class: ', person_data_class)
+            # print('data class evolved: ', person_data_class)
             # no error on prev step means attr validation passed
             # now update the DB object for the specific record
             person_new_data_json = cattr.unstructure(person_data_class)
+            # print('new data json: ', person_new_data_json)
+
             person_db_record.data= person_new_data_json
+            # print('before saving to db: ', person_db_record.data)
             person_db_record.save()
             person_instance = PersonSchemaOutput(
                 id = person_db_record.id,
@@ -196,6 +213,7 @@ class UpdatePerson(Mutation):
                 address_one=person_db_record.data["address_one"],
                 address_two=person_db_record.data["address_two"],
                 )
+            # print('person instance: ', person_db_record)
             return UpdatePerson(person=person_instance, ok=True)
         return UpdatePerson(person=None, ok=False)
 

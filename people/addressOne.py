@@ -7,7 +7,7 @@ from attr.validators import (
 from typing import Optional
 
 @attrs
-class AddressOneDataClass:
+class AddressDataClass:
     street: Optional[str] = attrib(default=None, validator=optional(instance_of(str)))
     city: Optional[str] = attrib(default=None, validator=optional(instance_of(str)))
     region: Optional[str] = attrib(default=None, validator=optional(instance_of(str)))
@@ -49,7 +49,6 @@ class AddressOneDataClass:
                     #Odd index (1, 3, 5, 7...), must be 'number'
                     if not(value[i].isdigit()):
                         raise ValueError("Please enter a valid postal code")
-
 
         else:
           #You can save some cpu ticks here... at this point, the string has to be of length 6 or you know it's not a zip

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'people',
     'graphene_django',
     'corsheaders',
+    'django_nose',
 ]
 
 MIDDLEWARE = [
@@ -187,4 +188,11 @@ LOGGING = {
 
 INTERNAL_IPS = [
     '127.0.0.1',
+]
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=people',
 ]

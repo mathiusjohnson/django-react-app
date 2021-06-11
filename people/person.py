@@ -8,6 +8,10 @@ from typing import Optional
 
 @attrs
 class PersonDataClass:
+    id: int = attrib(
+      default=None,
+      validator=optional(instance_of(int))
+    )
     name: Optional[str] = attrib(
         default=None, 
         validator=optional(instance_of(str))
