@@ -109,8 +109,10 @@ const CreatePerson: React.FC<iCreatePerson> = ({back}) =>{
                 setError(result.error.message.replace("[GraphQL]", ""))
                 return
             } else {
-                const newPerson = result.data.updatePerson.person
-                createPerson(newPerson)
+                const newPerson = result.data.updatePerson?.person
+                if (newPerson) {
+                  createPerson(newPerson)
+                }
             }
         })
         .then(() => transition(SHOW))

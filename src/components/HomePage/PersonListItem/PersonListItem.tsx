@@ -16,6 +16,7 @@ const UPDATE_PERSON_QUERY = `
 mutation ($id: ID!, $name: String!, $age: Int!) {
     updatePerson (personData: {id: $id, name: $name, age: $age }) {
         person {
+            id
             name
             age
             addressOne {
