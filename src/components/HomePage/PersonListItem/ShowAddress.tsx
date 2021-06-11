@@ -1,13 +1,18 @@
 import React from 'react';
+import { iAddress } from '../../../shared/interfaces/people.interface'
 
-const ShowAddressOne = ({address}) => {
+interface iShowAddressProps {
+  address?: iAddress
+}
 
-    if (address.street !== null) {
-        const street = address.street
-        const city = address.city
-        const region = address.region
-        const country = address.country
-        const postalCode = address.postalCode
+const ShowAddress: React.FC<iShowAddressProps> = ({address}) => {
+
+    if (address?.street !== null) {
+        const street = address?.street
+        const city = address?.city
+        const region = address?.region
+        const country = address?.country
+        const postalCode = address?.postalCode
         return (
           <div>
             <p>{street}, {city}</p>
@@ -19,4 +24,4 @@ const ShowAddressOne = ({address}) => {
     }
 };
 
-export default ShowAddressOne;
+export default ShowAddress;

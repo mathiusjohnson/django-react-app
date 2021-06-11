@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import ShowAddress from './ShowAddress';
 import { LocationContext } from '../../../context/index';
 import { useAuthState } from '../../../context/UserContext/index' 
+import { iPerson } from '../../../shared/interfaces/people.interface';
 
 const DELETE_PERSON_QUERY = `
 mutation($id: ID!) {
@@ -12,15 +13,24 @@ mutation($id: ID!) {
    }
 }
 `
-const ShowPerson = ({personState, onEditClicked, refresh}) => {
-    const { currentLocation, editButtonText } = useContext(LocationContext);
+interface iShowPersonProps {
+  personState: iPerson;
+  onEditClicked: () => void;
+  refresh: () => void;
+}
+
+const ShowPerson: React.FC<iShowPersonProps> = ({personState, onEditClicked, refresh}) => {
+    const { _, editButtonText } = useContext(LocationContext);
 
     const userDetails = useAuthState() //read user details from context
-
-    const [deletePersonResult, deletePerson] = useMutation(DELETE_PERSON_QUERY);
+  console.log(personState);
+  
+    const [_2, deletePerson] = useMutation(DELETE_PERSON_QUERY);
 
     const onDeleteClicked = () => {
-        const variables = { id: personState.id }
+      
+      const variables = { id: personState.id }
+      console.log(variables);
         deletePerson(variables)
             .then(result => {
                 if (result.error) {
@@ -40,7 +50,10 @@ const ShowPerson = ({personState, onEditClicked, refresh}) => {
             <span>{personState.age}</span>
             <ShowAddress address={personState.addressOne} />
             {/* {addressTwo ?  */}
-            <ShowAddress address={personState.addressTwo} />
+            {personState.addressTwo !== null ? 
+              <ShowAddress address={personState.addressTwo} />
+            : <div></div>
+            }
                 {/* : "" */}
             {/* } */}
             <div>

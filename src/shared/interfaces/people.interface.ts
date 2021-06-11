@@ -10,12 +10,12 @@ export interface iPerson {
   }
 }
 
-interface iAddress {
-  street: string;
-  city: string;
-  region: string;
-  country: string;
-  postalCode: string;
+export interface iAddress {
+  street?: string;
+  city?: string;
+  region?: string;
+  country?: string;
+  postalCode?: string;
 }
 
 export interface iPersonListItemProps {

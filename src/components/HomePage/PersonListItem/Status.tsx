@@ -1,9 +1,14 @@
 import React from 'react';
 
-export default function Status (props) {
+interface iStatusProps {
+  message: string;
+}
+
+const Status: React.FC<iStatusProps> = (props) => {
 	return (
 		<main className="">
   		<h1 className="">{props.message}</h1>
 		</main>
 	)
 }
+export default Status;

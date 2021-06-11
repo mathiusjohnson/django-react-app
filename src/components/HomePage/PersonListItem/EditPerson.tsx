@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Button from '../../Button';
 import ShowAddress from './ShowAddress';
 import {iPerson} from '../../../shared/interfaces/people.interface'
-import { StringLiteralType } from "typescript";
 
 interface iEditPersonProps {
   personState: iPerson;
